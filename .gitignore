@@ -1,0 +1,16 @@
+# Nexio LP ignore
+.gemini/
+*.log
+.DS_Store
+Thumbs.db
+
+# Unrelated files
+2025見積書.pdf
+技能実習生の受け入れにかかる費用.pdf
+after_submission.png
+after_typing.png
+before_interaction.png
+final_result.png
+final_state.png
+notebooklm_debug.png
+nexio_services.png
