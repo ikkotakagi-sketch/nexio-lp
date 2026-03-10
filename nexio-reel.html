@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NEXIO GROUP — Reel</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;800;900&family=Noto+Sans+JP:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --navy:#0a1e3d;--green:#00c291;--white:#fff;
+}
+html,body{width:100%;height:100%;overflow:hidden;background:#000;font-family:'Outfit','Noto Sans JP',sans-serif}
+
+/* Container — 9:16 centered */
+.reel{
+  position:relative;width:100vw;height:100vh;
+  max-width:450px;margin:0 auto;overflow:hidden;background:var(--navy);
+}
+
+/* Slide base */
+.slide{
+  position:absolute;inset:0;opacity:0;
+  display:flex;flex-direction:column;justify-content:flex-end;
+  transition:opacity 0.8s ease;z-index:1;
+}
+.slide.active{opacity:1;z-index:2}
+
+/* Background image with Ken Burns */
+.slide-bg{
+  position:absolute;inset:0;
+  background-size:cover;background-position:center;
+  animation:kenburns 10s ease-in-out forwards;
+}
+@keyframes kenburns{
+  0%{transform:scale(1)}
+  100%{transform:scale(1.12)}
+}
+
+/* Overlay gradient */
+.slide-overlay{
+  position:absolute;inset:0;
+  background:linear-gradient(0deg,rgba(10,30,61,0.92) 0%,rgba(10,30,61,0.3) 40%,rgba(10,30,61,0.15) 100%);
+}
+
+/* Content area */
+.slide-content{
+  position:relative;z-index:2;padding:40px 28px 60px;
+  display:flex;flex-direction:column;gap:12px;
+}
+
+/* Label tag */
+.s-label{
+  font-size:0.55rem;letter-spacing:5px;text-transform:uppercase;
+  color:var(--green);font-weight:700;
+  opacity:0;transform:translateY(20px);
+  animation:fadeUp 0.6s 0.3s ease forwards;
+}
+
+/* Main heading */
+.s-title{
+  font-size:1.8rem;font-weight:800;color:var(--white);line-height:1.2;
+  opacity:0;transform:translateY(20px);
+  animation:fadeUp 0.6s 0.5s ease forwards;
+}
+.s-title em{font-style:normal;color:var(--green)}
+
+/* Narration text (テロップ) */
+.s-narration{
+  font-size:0.85rem;color:rgba(255,255,255,0.8);line-height:1.8;
+  font-family:'Noto Sans JP',sans-serif;
+  opacity:0;transform:translateY(20px);
+  animation:fadeUp 0.6s 0.7s ease forwards;
+}
+
+/* Step number */
+.s-step{
+  font-size:3.5rem;font-weight:900;color:var(--green);opacity:0.15;
+  line-height:1;position:absolute;top:40px;right:28px;z-index:2;
+  opacity:0;animation:fadeUp 0.5s 0.2s ease forwards;
+}
+
+@keyframes fadeUp{
+  to{opacity:1;transform:translateY(0)}
+}
+
+/* Progress bar */
+.progress{
+  position:absolute;top:0;left:0;right:0;z-index:100;
+  display:flex;gap:4px;padding:12px 16px;
+}
+.progress-seg{
+  flex:1;height:3px;background:rgba(255,255,255,0.2);
+  border-radius:3px;overflow:hidden;
+}
+.progress-fill{
+  height:100%;width:0;background:var(--green);border-radius:3px;
+}
+.progress-seg.done .progress-fill{width:100%;transition:none}
+.progress-seg.active .progress-fill{
+  width:100%;
+  transition:width linear;
+}
+
+/* Logo watermark */
+.logo-mark{
+  position:absolute;top:28px;left:20px;z-index:100;
+  display:flex;align-items:center;gap:8px;
+}
+.logo-n{
+  width:28px;height:28px;background:var(--white);color:var(--navy);
+  display:flex;align-items:center;justify-content:center;
+  font-weight:900;font-size:0.8rem;border-radius:7px;
+}
+.logo-t{
+  font-weight:800;font-size:0.8rem;color:var(--white);letter-spacing:3px;
+}
+.logo-t span{opacity:0.4;font-size:0.5rem;margin-left:2px;letter-spacing:2px}
+
+/* CTA Slide */
+.cta-slide .slide-content{
+  justify-content:center;align-items:center;text-align:center;
+  height:100%;padding-bottom:100px;
+}
+.cta-btn{
+  display:inline-flex;align-items:center;gap:8px;
+  padding:18px 40px;border-radius:60px;
+  background:var(--green);color:var(--white);
+  font-weight:700;font-size:0.95rem;letter-spacing:1px;
+  text-decoration:none;
+  box-shadow:0 8px 32px rgba(0,194,145,0.4);
+  opacity:0;transform:translateY(20px);
+  animation:fadeUp 0.6s 1s ease forwards;
+  transition:transform 0.3s,box-shadow 0.3s;
+}
+.cta-btn:hover{transform:translateY(-3px) !important;box-shadow:0 12px 40px rgba(0,194,145,0.5)}
+.cta-btn svg{width:18px;height:18px}
+
+.cta-sub{
+  font-size:0.7rem;color:rgba(255,255,255,0.5);
+  letter-spacing:2px;text-transform:uppercase;
+  opacity:0;animation:fadeUp 0.5s 1.3s ease forwards;
+  margin-top:16px;
+}
+
+/* Sound control */
+.sound-btn{
+  position:absolute;bottom:20px;right:20px;z-index:100;
+  background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.2);
+  color:var(--white);width:36px;height:36px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;cursor:pointer;
+  font-size:0.8rem;backdrop-filter:blur(8px);
+}
+
+/* Tap to play overlay */
+.play-overlay{
+  position:absolute;inset:0;z-index:200;
+  background:rgba(10,30,61,0.95);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:20px;cursor:pointer;
+}
+.play-overlay.hidden{display:none}
+.play-circle{
+  width:80px;height:80px;border-radius:50%;
+  border:2px solid var(--green);
+  display:flex;align-items:center;justify-content:center;
+  animation:pulse 2s ease-in-out infinite;
+}
+@keyframes pulse{
+  0%,100%{box-shadow:0 0 0 0 rgba(0,194,145,0.3)}
+  50%{box-shadow:0 0 0 20px rgba(0,194,145,0)}
+}
+.play-circle svg{width:32px;height:32px;fill:var(--green);margin-left:4px}
+.play-text{font-size:0.65rem;letter-spacing:4px;color:rgba(255,255,255,0.5);text-transform:uppercase}
+
+/* Divider decoration */
+.s-divider{
+  width:40px;height:2px;background:var(--green);border-radius:2px;
+  opacity:0;animation:fadeUp 0.5s 0.9s ease forwards;
+}
+</style>
+</head>
+<body>
+
+<div class="reel" id="reel">
+
+  <!-- Play overlay -->
+  <div class="play-overlay" id="playOverlay">
+    <div class="play-circle">
+      <svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg>
+    </div>
+    <div class="play-text">Tap to Play</div>
+  </div>
+
+  <!-- Logo -->
+  <div class="logo-mark">
+    <div class="logo-n">N</div>
+    <div class="logo-t">NEXIO<span>GROUP</span></div>
+  </div>
+
+  <!-- Progress -->
+  <div class="progress" id="progress"></div>
+
+  <!-- Slide 0: Opening -->
+  <div class="slide" data-dur="8">
+    <div class="slide-bg" style="background-image:url(nexio_hero.png)"></div>
+    <div class="slide-overlay"></div>
+    <div class="slide-content">
+      <div class="s-label">YOUR COMPASS TO THE NEXT SOCIETY</div>
+      <h1 class="s-title">外国人雇用の<br><em>未来を切り拓く。</em></h1>
+      <div class="s-divider"></div>
+      <p class="s-narration">採用から定着、そして成長へ。<br>ネクシオグループの<br>ワンストップ支援をご紹介します。</p>
+    </div>
+  </div>
+
+  <!-- Slide 1: About -->
+  <div class="slide" data-dur="8">
+    <div class="slide-bg" style="background-image:url(nexio_about.png)"></div>
+    <div class="slide-overlay"></div>
+    <div class="slide-content">
+      <div class="s-label">ABOUT NEXIO GROUP</div>
+      <h1 class="s-title">4つの専門法人が<br><em>連携する</em>グループ。</h1>
+      <div class="s-divider"></div>
+      <p class="s-narration">人材派遣・労務管理・ビザ申請・<br>技能実習の4分野を網羅。<br>静岡県三島市から全国の企業を支援。</p>
+    </div>
+  </div>
+
+  <!-- Slide 2: Step 01 -->
+  <div class="slide" data-dur="8">
+    <div class="slide-bg" style="background-image:url(step_recruit.png)"></div>
+    <div class="slide-overlay"></div>
+    <span class="s-step">01</span>
+    <div class="slide-content">
+      <div class="s-label">STEP 01 — RECRUIT & MATCH</div>
+      <h1 class="s-title">最適な人材を<br><em>見つける。</em></h1>
+      <div class="s-divider"></div>
+      <p class="s-narration">海外送出機関との連携で<br>企業ニーズに合った人材を厳選。<br>技能・適性・文化適合を考慮します。</p>
+    </div>
+  </div>
+
+  <!-- Slide 3: Step 02 -->
+  <div class="slide" data-dur="8">
+    <div class="slide-bg" style="background-image:url(step_visa.png)"></div>
+    <div class="slide-overlay"></div>
+    <span class="s-step">02</span>
+    <div class="slide-content">
+      <div class="s-label">STEP 02 — VISA & LEGAL</div>
+      <h1 class="s-title">在留資格を<br><em>確実に取得。</em></h1>
+      <div class="s-divider"></div>
+      <p class="s-narration">年間200件以上の申請実績。<br>専門行政書士が法的リスクを回避し<br>スムーズな入国・就労を実現します。</p>
+    </div>
+  </div>
+
+  <!-- Slide 4: Step 03 -->
+  <div class="slide" data-dur="8">
+    <div class="slide-bg" style="background-image:url(step_labor.png)"></div>
+    <div class="slide-overlay"></div>
+    <span class="s-step">03</span>
+    <div class="slide-content">
+      <div class="s-label">STEP 03 — LABOR & INSURANCE</div>
+      <h1 class="s-title">労務環境を<br><em>整備する。</em></h1>
+      <div class="s-divider"></div>
+      <p class="s-narration">社会保険・労働保険の手続き、<br>就業規則の策定、助成金申請まで<br>社労士チームが一元管理。</p>
+    </div>
+  </div>
+
+  <!-- Slide 5: Step 04 -->
+  <div class="slide" data-dur="8">
+    <div class="slide-bg" style="background-image:url(step_growth.png)"></div>
+    <div class="slide-overlay"></div>
+    <span class="s-step">04</span>
+    <div class="slide-content">
+      <div class="s-label">STEP 04 — RETENTION & GROWTH</div>
+      <h1 class="s-title">定着と成長を<br><em>支える。</em></h1>
+      <div class="s-divider"></div>
+      <p class="s-narration">定期訪問・日本語教育・<br>キャリアアップ研修で<br>長期的な成功をサポートします。</p>
+    </div>
+  </div>
+
+  <!-- Slide 6: CTA -->
+  <div class="slide cta-slide" data-dur="12">
+    <div class="slide-bg" style="background-image:url(nexio_hero.png)"></div>
+    <div class="slide-overlay" style="background:rgba(10,30,61,0.88)"></div>
+    <div class="slide-content">
+      <div class="s-label" style="animation-delay:0.2s">NEXIO GROUP</div>
+      <h1 class="s-title" style="animation-delay:0.4s;text-align:center">採用から定着まで、<br><em>まるごと</em>ご相談ください。</h1>
+      <div class="s-divider" style="animation-delay:0.7s;margin:0 auto"></div>
+      <a href="https://ikkotakagi-sketch.github.io/nexio-lp/#contact" target="_blank" class="cta-btn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+        お問い合わせはこちら
+      </a>
+      <div class="cta-sub">無料相談受付中</div>
+    </div>
+  </div>
+
+  <!-- Sound button -->
+  <button class="sound-btn" id="soundBtn" title="BGM">♪</button>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const slides = document.querySelectorAll('.slide');
+  const progressBar = document.getElementById('progress');
+  const playOverlay = document.getElementById('playOverlay');
+  const soundBtn = document.getElementById('soundBtn');
+  let current = 0;
+  let timer = null;
+  let audioCtx = null;
+  let bgmPlaying = false;
+
+  // Build progress segments
+  slides.forEach(() => {
+    const seg = document.createElement('div');
+    seg.className = 'progress-seg';
+    seg.innerHTML = '<div class="progress-fill"></div>';
+    progressBar.appendChild(seg);
+  });
+  const segs = progressBar.querySelectorAll('.progress-seg');
+
+  // BGM via Web Audio API — chill ambient pad
+  function startBGM() {
+    if (audioCtx) return;
+    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    const master = audioCtx.createGain();
+    master.gain.value = 0.08;
+    master.connect(audioCtx.destination);
+
+    function pad(freq, detune) {
+      const osc = audioCtx.createOscillator();
+      const gain = audioCtx.createGain();
+      osc.type = 'sine';
+      osc.frequency.value = freq;
+      osc.detune.value = detune || 0;
+      gain.gain.value = 0.3;
+      osc.connect(gain);
+      gain.connect(master);
+      osc.start();
+      // Slow LFO for movement
+      const lfo = audioCtx.createOscillator();
+      const lfoGain = audioCtx.createGain();
+      lfo.frequency.value = 0.15 + Math.random() * 0.1;
+      lfoGain.gain.value = 3;
+      lfo.connect(lfoGain);
+      lfoGain.connect(osc.frequency);
+      lfo.start();
+      return { osc, gain };
+    }
+
+    // Ambient pad chord: Cmaj7 feel
+    pad(130.81, 5);  // C3
+    pad(164.81, -3); // E3
+    pad(196.00, 7);  // G3
+    pad(246.94, -5); // B3
+    pad(261.63, 3);  // C4 (octave)
+    bgmPlaying = true;
+    soundBtn.textContent = '♪';
+    soundBtn.style.borderColor = 'var(--green)';
+  }
+
+  function stopBGM() {
+    if (audioCtx) {
+      audioCtx.close();
+      audioCtx = null;
+      bgmPlaying = false;
+      soundBtn.textContent = '♪';
+      soundBtn.style.borderColor = 'rgba(255,255,255,0.2)';
+    }
+  }
+
+  soundBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    bgmPlaying ? stopBGM() : startBGM();
+  });
+
+  function showSlide(idx) {
+    // Reset all
+    slides.forEach((s, i) => {
+      s.classList.remove('active');
+      // Reset animations
+      s.querySelectorAll('.s-label,.s-title,.s-narration,.s-step,.s-divider,.cta-btn,.cta-sub').forEach(el => {
+        el.style.animation = 'none';
+        el.offsetHeight; // reflow
+        el.style.animation = '';
+      });
+    });
+
+    // Update progress
+    segs.forEach((seg, i) => {
+      seg.classList.remove('active', 'done');
+      seg.querySelector('.progress-fill').style.transitionDuration = '';
+      if (i < idx) {
+        seg.classList.add('done');
+      }
+    });
+
+    // Activate current
+    slides[idx].classList.add('active');
+    // Reset Ken Burns
+    const bg = slides[idx].querySelector('.slide-bg');
+    if (bg) {
+      bg.style.animation = 'none';
+      bg.offsetHeight;
+      bg.style.animation = '';
+    }
+
+    // Animate progress
+    const dur = parseInt(slides[idx].getAttribute('data-dur')) || 8;
+    requestAnimationFrame(() => {
+      segs[idx].classList.add('active');
+      segs[idx].querySelector('.progress-fill').style.transitionDuration = dur + 's';
+    });
+
+    // Auto advance
+    clearTimeout(timer);
+    if (idx < slides.length - 1) {
+      timer = setTimeout(() => {
+        current = idx + 1;
+        showSlide(current);
+      }, dur * 1000);
+    }
+  }
+
+  // Start on tap
+  playOverlay.addEventListener('click', () => {
+    playOverlay.classList.add('hidden');
+    startBGM();
+    showSlide(0);
+  });
+
+  // Tap to advance
+  document.getElementById('reel').addEventListener('click', (e) => {
+    if (!playOverlay.classList.contains('hidden')) return;
+    if (e.target.closest('.cta-btn') || e.target.closest('.sound-btn')) return;
+    clearTimeout(timer);
+    current = (current + 1) % slides.length;
+    showSlide(current);
+  });
+});
+</script>
+</body>
+</html>
