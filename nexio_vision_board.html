@@ -1,0 +1,1110 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ネクシオG 次世代DXプラットフォーム | ビジョンボード</title>
+    <meta name="description" content="作業から、価値へ。ネクシオグループの次世代DXプラットフォーム・ビジョンボード。AIと人間の完全な分業による圧倒的な業務効率化と利益還元。">
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Chart.js CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+    <!-- Mermaid.js CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10.9.1/dist/mermaid.min.js"></script>
+    <!-- FontAwesome CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Noto+Sans+JP:wght@300;400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        navy: {
+                            50: '#eef2f7',
+                            100: '#d4dce8',
+                            200: '#a9b9d1',
+                            300: '#7e96ba',
+                            400: '#5373a3',
+                            500: '#1e3a5f',
+                            600: '#162c48',
+                            700: '#0f1e30',
+                            800: '#0a1520',
+                            900: '#050b10',
+                        },
+                        emerald: {
+                            50: '#ecfdf5',
+                            100: '#d1fae5',
+                            200: '#a7f3d0',
+                            300: '#6ee7b7',
+                            400: '#34d399',
+                            500: '#10b981',
+                            600: '#059669',
+                            700: '#047857',
+                        },
+                        teal: {
+                            400: '#2dd4bf',
+                            500: '#14b8a6',
+                            600: '#0d9488',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'Noto Sans JP', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* ===== ベーススタイル ===== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Inter', 'Noto Sans JP', sans-serif;
+            background-color: #f8fafc;
+            color: #1e293b;
+            overflow-x: hidden;
+        }
+
+        /* ===== ヒーローセクション ===== */
+        .hero-section {
+            position: relative;
+            min-height: 100vh;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+        }
+
+        .hero-bg-image {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: 0;
+            filter: brightness(0.5);
+        }
+
+        .hero-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(160deg,
+                    rgba(15, 30, 48, 0.93) 0%,
+                    rgba(30, 58, 95, 0.88) 40%,
+                    rgba(16, 185, 129, 0.25) 100%);
+            z-index: 1;
+        }
+
+        .hero-overlay::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background:
+                radial-gradient(ellipse at 20% 50%, rgba(16, 185, 129, 0.12) 0%, transparent 60%),
+                radial-gradient(ellipse at 80% 20%, rgba(45, 212, 191, 0.08) 0%, transparent 50%);
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        /* ===== パーティクル背景 ===== */
+        .particles {
+            position: absolute;
+            inset: 0;
+            z-index: 1;
+            overflow: hidden;
+        }
+
+        .particle {
+            position: absolute;
+            width: 3px;
+            height: 3px;
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 50%;
+            animation: float-up linear infinite;
+        }
+
+        @keyframes float-up {
+            0% {
+                transform: translateY(100vh) scale(0);
+                opacity: 0;
+            }
+
+            10% {
+                opacity: 1;
+            }
+
+            90% {
+                opacity: 1;
+            }
+
+            100% {
+                transform: translateY(-10vh) scale(1);
+                opacity: 0;
+            }
+        }
+
+        /* ===== セクションタイトルアクセントライン ===== */
+        .section-title::after {
+            content: '';
+            display: block;
+            width: 60px;
+            height: 4px;
+            background: linear-gradient(90deg, #1e3a5f, #10b981);
+            margin-top: 16px;
+            border-radius: 2px;
+        }
+
+        .section-title-center::after {
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* ===== グラデーションテキスト ===== */
+        .gradient-text-hero {
+            background: linear-gradient(135deg, #34d399 0%, #2dd4bf 50%, #6ee7b7 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* ===== Mermaidコンテナ ===== */
+        .mermaid-container {
+            background: white;
+            border-radius: 20px;
+            box-shadow:
+                0 4px 24px rgba(0, 0, 0, 0.04),
+                0 1px 3px rgba(0, 0, 0, 0.06);
+            padding: 48px;
+            border: 1px solid #e2e8f0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .mermaid-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #1e3a5f, #10b981, #2dd4bf);
+        }
+
+        .mermaid svg {
+            max-width: 100%;
+            height: auto;
+        }
+
+        /* ===== Chart.jsコンテナ ===== */
+        .chart-container {
+            position: relative;
+            background: white;
+            border-radius: 20px;
+            box-shadow:
+                0 4px 24px rgba(0, 0, 0, 0.04),
+                0 1px 3px rgba(0, 0, 0, 0.06);
+            padding: 40px;
+            border: 1px solid #e2e8f0;
+        }
+
+        /* ===== カードホバーエフェクト ===== */
+        .vision-card {
+            transition: all 0.5s cubic-bezier(0.25, 0.8, 0.25, 1);
+            border: 1px solid #e2e8f0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .vision-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            transition: height 0.4s ease;
+        }
+
+        .vision-card:hover {
+            transform: translateY(-12px);
+            box-shadow:
+                0 25px 50px rgba(0, 0, 0, 0.08),
+                0 10px 20px rgba(0, 0, 0, 0.04);
+            border-color: transparent;
+        }
+
+        .vision-card:hover::before {
+            height: 6px;
+        }
+
+        .vision-card .card-icon-wrap {
+            transition: transform 0.5s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+
+        .vision-card:hover .card-icon-wrap {
+            transform: scale(1.08) rotate(-2deg);
+        }
+
+        .card-ai::before {
+            background: linear-gradient(90deg, #3b82f6, #60a5fa);
+        }
+
+        .card-human::before {
+            background: linear-gradient(90deg, #10b981, #34d399);
+        }
+
+        .card-reward::before {
+            background: linear-gradient(90deg, #f59e0b, #fbbf24);
+        }
+
+        /* ===== スクロールアニメーション ===== */
+        .fade-in-up {
+            opacity: 0;
+            transform: translateY(50px);
+            transition: opacity 0.9s ease-out, transform 0.9s ease-out;
+        }
+
+        .fade-in-up.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* ===== パルスグロー ===== */
+        @keyframes pulse-glow {
+
+            0%,
+            100% {
+                box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.35);
+            }
+
+            50% {
+                box-shadow: 0 0 0 14px rgba(16, 185, 129, 0);
+            }
+        }
+
+        .pulse-glow {
+            animation: pulse-glow 2.5s infinite;
+        }
+
+        /* ===== バッジスタイル ===== */
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 5px 16px;
+            border-radius: 100px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+        }
+
+        /* ===== ナビゲーションバー ===== */
+        .navbar-scrolled {
+            background: rgba(15, 30, 48, 0.95) !important;
+            backdrop-filter: blur(20px);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.15);
+        }
+
+        /* ===== フッター ===== */
+        .footer-gradient {
+            background: linear-gradient(160deg, #0a1520 0%, #1e3a5f 100%);
+        }
+
+        /* ===== スクロールインジケーター ===== */
+        @keyframes scroll-bounce {
+
+            0%,
+            20%,
+            50%,
+            80%,
+            100% {
+                transform: translateY(0);
+            }
+
+            40% {
+                transform: translateY(8px);
+            }
+
+            60% {
+                transform: translateY(4px);
+            }
+        }
+
+        .scroll-indicator {
+            animation: scroll-bounce 2s ease infinite;
+        }
+
+        /* ===== カウンターアニメーション ===== */
+        .counter {
+            font-variant-numeric: tabular-nums;
+        }
+
+        /* ===== レスポンシブ ===== */
+        @media (max-width: 768px) {
+            .hero-section {
+                min-height: 90vh;
+            }
+
+            .mermaid-container {
+                padding: 24px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- ===== ナビゲーションバー ===== -->
+    <nav class="fixed top-0 left-0 right-0 z-50 transition-all duration-500" id="navbar">
+        <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <div
+                    class="w-10 h-10 rounded-xl bg-gradient-to-br from-emerald-500 to-teal-400 flex items-center justify-center shadow-lg shadow-emerald-500/25">
+                    <span class="text-white font-bold text-lg">N</span>
+                </div>
+                <span class="text-white font-bold text-xl tracking-tight">NexioG</span>
+            </div>
+            <div class="hidden md:flex items-center gap-8">
+                <a href="#vision"
+                    class="text-white/70 hover:text-white text-sm font-medium transition-colors duration-300">ビジョン</a>
+                <a href="#system"
+                    class="text-white/70 hover:text-white text-sm font-medium transition-colors duration-300">システム構成</a>
+                <a href="#evolution"
+                    class="text-white/70 hover:text-white text-sm font-medium transition-colors duration-300">働き方の進化</a>
+                <a href="#hitl"
+                    class="text-white/70 hover:text-white text-sm font-medium transition-colors duration-300">運用体制</a>
+            </div>
+            <div class="flex items-center gap-3">
+                <span class="badge bg-emerald-500/15 text-emerald-400 border border-emerald-500/25">
+                    <span class="w-2 h-2 rounded-full bg-emerald-400 inline-block animate-pulse"></span>
+                    Vision 2026
+                </span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- ===== セクション1：ヒーローバナー＆ビジョン ===== -->
+    <section id="vision" class="hero-section">
+        <img src="https://picsum.photos/id/180/1920/1080" alt="先進的なオフィスとテクノロジー" class="hero-bg-image" loading="eager">
+        <div class="hero-overlay"></div>
+
+        <!-- パーティクル -->
+        <div class="particles" id="particles"></div>
+
+        <div class="hero-content w-full max-w-7xl mx-auto px-6 py-32 md:py-40">
+            <div class="grid md:grid-cols-2 gap-12 items-center">
+                <!-- 左: メインコピー -->
+                <div>
+                    <div class="badge bg-white/10 text-white/90 border border-white/20 mb-6 backdrop-blur-sm">
+                        <i class="fa-solid fa-bolt text-emerald-400"></i>
+                        次世代DXプラットフォーム
+                    </div>
+                    <h1 class="text-4xl md:text-5xl lg:text-6xl font-extrabold text-white leading-tight mb-6">
+                        作業から、<br>
+                        <span class="gradient-text-hero">価値へ。</span><br>
+                        <span class="text-3xl md:text-4xl lg:text-5xl font-bold text-white/90">ネクシオG 次世代DX</span>
+                    </h1>
+                    <p class="text-lg md:text-xl text-white/60 leading-relaxed mb-10 max-w-lg">
+                        AIと人間の完全な分業による、<br class="hidden md:block">
+                        圧倒的な業務効率化と利益還元
+                    </p>
+                    <div class="flex flex-wrap gap-4">
+                        <a href="#system"
+                            class="inline-flex items-center gap-2 px-8 py-3.5 bg-gradient-to-r from-emerald-500 to-teal-500 text-white font-semibold rounded-xl hover:shadow-lg hover:shadow-emerald-500/30 transition-all duration-300 text-sm">
+                            <i class="fa-solid fa-diagram-project"></i>
+                            システム構成を見る
+                        </a>
+                        <a href="#evolution"
+                            class="inline-flex items-center gap-2 px-8 py-3.5 bg-white/10 text-white font-semibold rounded-xl border border-white/20 hover:bg-white/20 transition-all duration-300 text-sm backdrop-blur-sm">
+                            <i class="fa-solid fa-chart-line"></i>
+                            効果予測データ
+                        </a>
+                    </div>
+                </div>
+
+                <!-- 右: KPIカード群 -->
+                <div class="grid grid-cols-2 gap-4">
+                    <div
+                        class="bg-white/8 backdrop-blur-md rounded-2xl p-6 border border-white/10 hover:bg-white/12 transition-all duration-400 group">
+                        <div
+                            class="text-emerald-400 text-3xl mb-3 group-hover:scale-110 transition-transform duration-300">
+                            <i class="fa-solid fa-robot"></i>
+                        </div>
+                        <div class="text-3xl font-bold text-white counter">AI</div>
+                        <div class="text-white/50 text-sm mt-1">Gemini統合解析</div>
+                    </div>
+                    <div
+                        class="bg-white/8 backdrop-blur-md rounded-2xl p-6 border border-white/10 hover:bg-white/12 transition-all duration-400 group">
+                        <div
+                            class="text-teal-400 text-3xl mb-3 group-hover:scale-110 transition-transform duration-300">
+                            <i class="fa-solid fa-clock"></i>
+                        </div>
+                        <div class="text-3xl font-bold text-white counter">-70<span class="text-lg">%</span></div>
+                        <div class="text-white/50 text-sm mt-1">単純業務の削減</div>
+                    </div>
+                    <div
+                        class="bg-white/8 backdrop-blur-md rounded-2xl p-6 border border-white/10 hover:bg-white/12 transition-all duration-400 group">
+                        <div
+                            class="text-blue-400 text-3xl mb-3 group-hover:scale-110 transition-transform duration-300">
+                            <i class="fa-solid fa-shield-halved"></i>
+                        </div>
+                        <div class="text-3xl font-bold text-white counter">HITL</div>
+                        <div class="text-white/50 text-sm mt-1">Human-in-the-Loop</div>
+                    </div>
+                    <div
+                        class="bg-white/8 backdrop-blur-md rounded-2xl p-6 border border-white/10 hover:bg-white/12 transition-all duration-400 pulse-glow group">
+                        <div
+                            class="text-amber-400 text-3xl mb-3 group-hover:scale-110 transition-transform duration-300">
+                            <i class="fa-solid fa-coins"></i>
+                        </div>
+                        <div class="text-3xl font-bold text-white counter">DX<span class="text-lg">+</span></div>
+                        <div class="text-white/50 text-sm mt-1">利益還元ボーナス</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- スクロールインジケーター -->
+        <div class="absolute bottom-10 left-1/2 -translate-x-1/2 z-10 flex flex-col items-center gap-2">
+            <span class="text-white/40 text-xs tracking-[0.25em] uppercase">Scroll</span>
+            <div class="w-6 h-10 rounded-full border-2 border-white/25 flex justify-center pt-2">
+                <div class="w-1.5 h-3 rounded-full bg-emerald-400/70 scroll-indicator"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== セクション2：システム相関図 ===== -->
+    <section id="system" class="py-24 md:py-32 bg-gradient-to-b from-slate-50 to-white">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="text-center mb-16 fade-in-up">
+                <div class="badge bg-navy-500/10 text-navy-500 border border-navy-500/20 mb-4 mx-auto">
+                    <i class="fa-solid fa-sitemap"></i>
+                    System Architecture
+                </div>
+                <h2 class="text-3xl md:text-4xl font-bold text-navy-500 section-title section-title-center">
+                    UI/UXの完全分離
+                </h2>
+                <p class="text-slate-500 mt-6 max-w-2xl mx-auto leading-relaxed text-lg">
+                    顧客は<strong class="text-navy-500">LINEのみ</strong>、私たちは<strong
+                        class="text-navy-500">Googleのみ</strong>。<br>
+                    シンプルで強力なUI/UX分離アーキテクチャ。
+                </p>
+            </div>
+
+            <div class="mermaid-container fade-in-up">
+                <div class="mermaid">
+                    flowchart LR
+                    subgraph CUSTOMER["👤 顧客チャネル (LINE)"]
+                    A["📱 LINEボット<br />(写真・テキスト送信)"]
+                    end
+
+                    subgraph API_HUB["⚡ 統合APIハブ"]
+                    B["🤖 Gemini解析<br />(AIデータ抽出)"]
+                    C["🔄 Prompt Expander<br />(AI情報拡張)"]
+                    end
+
+                    subgraph INTERNAL["🏢 社内システム (Google)"]
+                    D["📁 Google Drive<br />(整理・自動保存)"]
+                    E["📊 Google Sheets<br />(フジリンクス管理簿<br />自動入力)"]
+                    F["✅ Human-in-the-Loop<br />(最終承認)"]
+                    end
+
+                    A -->|"写真・テキスト"| B
+                    B -->|"構造化データ"| C
+                    C -->|"拡張データ + ファイル"| D
+                    C -->|"台帳データ連携"| E
+                    D --> F
+                    E --> F
+
+                    style CUSTOMER fill:#eff6ff,stroke:#3b82f6,stroke-width:2px,color:#1e3a5f
+                    style API_HUB fill:#ecfdf5,stroke:#10b981,stroke-width:2px,color:#1e3a5f
+                    style INTERNAL fill:#f5f3ff,stroke:#7c3aed,stroke-width:2px,color:#1e3a5f
+                    style A fill:#dbeafe,stroke:#3b82f6,stroke-width:2px,color:#1e3a5f
+                    style B fill:#d1fae5,stroke:#10b981,stroke-width:2px,color:#1e3a5f
+                    style C fill:#d1fae5,stroke:#10b981,stroke-width:1.5px,color:#1e3a5f
+                    style D fill:#ede9fe,stroke:#7c3aed,stroke-width:1.5px,color:#1e3a5f
+                    style E fill:#ede9fe,stroke:#7c3aed,stroke-width:1.5px,color:#1e3a5f
+                    style F fill:#fef3c7,stroke:#f59e0b,stroke-width:2px,color:#1e3a5f
+                </div>
+            </div>
+
+            <!-- データフロー凡例 -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-12 fade-in-up">
+                <div
+                    class="flex items-center gap-4 bg-white rounded-xl p-5 border border-slate-100 shadow-sm hover:shadow-md transition-shadow duration-300">
+                    <div
+                        class="w-12 h-12 rounded-xl bg-blue-50 flex items-center justify-center text-blue-500 flex-shrink-0">
+                        <i class="fa-brands fa-line text-2xl"></i>
+                    </div>
+                    <div>
+                        <div class="font-semibold text-sm text-navy-500">顧客タッチポイント</div>
+                        <div class="text-xs text-slate-400 mt-0.5">LINEボットのみ。アプリ不要で即導入</div>
+                    </div>
+                </div>
+                <div
+                    class="flex items-center gap-4 bg-white rounded-xl p-5 border border-slate-100 shadow-sm hover:shadow-md transition-shadow duration-300">
+                    <div
+                        class="w-12 h-12 rounded-xl bg-emerald-50 flex items-center justify-center text-emerald-500 flex-shrink-0">
+                        <i class="fa-solid fa-brain text-2xl"></i>
+                    </div>
+                    <div>
+                        <div class="font-semibold text-sm text-navy-500">AI処理レイヤー</div>
+                        <div class="text-xs text-slate-400 mt-0.5">Gemini解析 + Prompt Expanderで自動処理</div>
+                    </div>
+                </div>
+                <div
+                    class="flex items-center gap-4 bg-white rounded-xl p-5 border border-slate-100 shadow-sm hover:shadow-md transition-shadow duration-300">
+                    <div
+                        class="w-12 h-12 rounded-xl bg-purple-50 flex items-center justify-center text-purple-500 flex-shrink-0">
+                        <i class="fa-brands fa-google text-2xl"></i>
+                    </div>
+                    <div>
+                        <div class="font-semibold text-sm text-navy-500">社内基盤</div>
+                        <div class="text-xs text-slate-400 mt-0.5">Google Workspace完全統合で運用コスト最小</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== セクション3：DXによる働き方の進化 ===== -->
+    <section id="evolution" class="py-24 md:py-32 bg-white">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="text-center mb-16 fade-in-up">
+                <div class="badge bg-emerald-500/10 text-emerald-600 border border-emerald-500/20 mb-4 mx-auto">
+                    <i class="fa-solid fa-chart-line"></i>
+                    Business Impact
+                </div>
+                <h2 class="text-3xl md:text-4xl font-bold text-navy-500 section-title section-title-center">
+                    労働集約型業務の削減と、高単価業務へのシフト
+                </h2>
+                <p class="text-slate-500 mt-6 max-w-2xl mx-auto leading-relaxed text-lg">
+                    DX導入により「作業する時間」が激減し、「考え・提案する時間」へシフト。<br>
+                    半年で業務構造が劇的に変化します。
+                </p>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-8">
+                <!-- 左: インサイトカード -->
+                <div class="flex flex-col gap-6 fade-in-up">
+                    <div class="bg-gradient-to-br from-red-50 to-orange-50 rounded-2xl p-6 border border-red-100">
+                        <div class="flex items-center gap-3 mb-3">
+                            <div class="w-11 h-11 rounded-xl bg-red-100 flex items-center justify-center">
+                                <i class="fa-solid fa-arrow-trend-down text-red-500 text-lg"></i>
+                            </div>
+                            <div class="font-bold text-navy-500">Do作業の激減</div>
+                        </div>
+                        <div class="text-4xl font-extrabold text-red-500 mb-2">-85<span class="text-xl">%</span></div>
+                        <p class="text-sm text-slate-500 leading-relaxed">半年後、単純入力・転記・確認作業がAIと自動化によりほぼゼロに。</p>
+                    </div>
+                    <div class="bg-gradient-to-br from-emerald-50 to-teal-50 rounded-2xl p-6 border border-emerald-100">
+                        <div class="flex items-center gap-3 mb-3">
+                            <div class="w-11 h-11 rounded-xl bg-emerald-100 flex items-center justify-center">
+                                <i class="fa-solid fa-arrow-trend-up text-emerald-500 text-lg"></i>
+                            </div>
+                            <div class="font-bold text-navy-500">価値業務の拡大</div>
+                        </div>
+                        <div class="text-4xl font-extrabold text-emerald-500 mb-2">+240<span class="text-xl">%</span>
+                        </div>
+                        <p class="text-sm text-slate-500 leading-relaxed">ヒアリング・助成金提案・コミュニケーションに割ける時間が劇的に増大。</p>
+                    </div>
+                </div>
+
+                <!-- 右: Chart.js グラフ -->
+                <div class="md:col-span-2 chart-container fade-in-up">
+                    <div class="flex items-center justify-between mb-6">
+                        <h3 class="font-bold text-navy-500 text-lg">月間業務リソース配分の推移</h3>
+                        <div class="flex items-center gap-4 text-xs text-slate-500">
+                            <span class="flex items-center gap-1.5">
+                                <span class="w-3 h-3 rounded-sm" style="background: rgba(239, 68, 68, 0.8);"></span>
+                                Do（単純作業）
+                            </span>
+                            <span class="flex items-center gap-1.5">
+                                <span class="w-3 h-3 rounded-sm" style="background: rgba(16, 185, 129, 0.8);"></span>
+                                Review & Value（高単価業務）
+                            </span>
+                        </div>
+                    </div>
+                    <div style="height: 340px;">
+                        <canvas id="dxChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== セクション4：Human-in-the-Loopと利益還元 ===== -->
+    <section id="hitl" class="py-24 md:py-32 bg-gradient-to-b from-white to-slate-50">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="text-center mb-16 fade-in-up">
+                <div class="badge bg-amber-500/10 text-amber-600 border border-amber-500/20 mb-4 mx-auto">
+                    <i class="fa-solid fa-shield-halved"></i>
+                    Safety & Incentive
+                </div>
+                <h2 class="text-3xl md:text-4xl font-bold text-navy-500 section-title section-title-center">
+                    安心の運用体制とDXインセンティブ
+                </h2>
+                <p class="text-slate-500 mt-6 max-w-2xl mx-auto leading-relaxed text-lg">
+                    AIは「下書き」するだけ。最終判断は必ず人間が行い、<br>
+                    生まれた利益はスタッフへ還元する仕組みです。
+                </p>
+            </div>
+
+            <!-- 3つのカード -->
+            <div class="grid md:grid-cols-3 gap-8 items-stretch">
+
+                <!-- カード1: AIの下書き -->
+                <div class="vision-card card-ai bg-white rounded-2xl p-8 fade-in-up">
+                    <div class="flex items-center justify-between mb-6">
+                        <div
+                            class="card-icon-wrap w-16 h-16 rounded-2xl bg-gradient-to-br from-blue-50 to-sky-50 flex items-center justify-center">
+                            <i class="fa-solid fa-pen-ruler text-2xl text-blue-500"></i>
+                        </div>
+                        <span class="text-6xl font-black text-slate-100 select-none">01</span>
+                    </div>
+                    <div class="badge bg-blue-50 text-blue-600 mb-4">
+                        <i class="fa-solid fa-robot text-xs"></i>
+                        AI DRAFT
+                    </div>
+                    <h3 class="text-xl font-bold text-navy-500 mb-3">AIの下書き</h3>
+                    <p class="text-slate-500 text-sm leading-relaxed mb-6">
+                        AIは決裁しない。Geminiが写真・テキストを解析し、スプレッドシートに<strong
+                            class="text-navy-400">仮入力するだけ</strong>。判断はAIに任せない安全設計。
+                    </p>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="text-xs bg-slate-50 text-slate-500 px-3 py-1.5 rounded-lg border border-slate-100">
+                            <i class="fa-solid fa-file-pen mr-1"></i>仮入力のみ
+                        </span>
+                        <span class="text-xs bg-slate-50 text-slate-500 px-3 py-1.5 rounded-lg border border-slate-100">
+                            <i class="fa-solid fa-ban mr-1"></i>決裁権限なし
+                        </span>
+                    </div>
+
+                    <!-- 矢印 (デスクトップ) -->
+                    <div
+                        class="hidden md:flex absolute -right-5 top-1/2 -translate-y-1/2 z-10 w-10 h-10 rounded-full bg-gradient-to-r from-blue-500 to-emerald-500 text-white items-center justify-center shadow-lg">
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </div>
+                    <!-- 矢印 (モバイル) -->
+                    <div class="flex md:hidden justify-center mt-6">
+                        <div
+                            class="w-10 h-10 rounded-full bg-gradient-to-b from-blue-500 to-emerald-500 text-white flex items-center justify-center shadow-lg">
+                            <i class="fa-solid fa-arrow-down"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- カード2: 人間の承認 -->
+                <div class="vision-card card-human bg-white rounded-2xl p-8 fade-in-up" style="transition-delay: 0.1s;">
+                    <div class="flex items-center justify-between mb-6">
+                        <div
+                            class="card-icon-wrap w-16 h-16 rounded-2xl bg-gradient-to-br from-emerald-50 to-teal-50 flex items-center justify-center">
+                            <i class="fa-solid fa-user-check text-2xl text-emerald-500"></i>
+                        </div>
+                        <span class="text-6xl font-black text-slate-100 select-none">02</span>
+                    </div>
+                    <div class="badge bg-emerald-50 text-emerald-600 mb-4">
+                        <i class="fa-solid fa-shield-check text-xs"></i>
+                        HUMAN APPROVAL
+                    </div>
+                    <h3 class="text-xl font-bold text-navy-500 mb-3">人間の承認</h3>
+                    <p class="text-slate-500 text-sm leading-relaxed mb-6">
+                        最後に<strong class="text-navy-400">人間が目視確認</strong>し、承認ボタンを押す安全設計。AIの出力に誤りがあっても、必ず人間のチェックを通過する仕組み。
+                    </p>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="text-xs bg-slate-50 text-slate-500 px-3 py-1.5 rounded-lg border border-slate-100">
+                            <i class="fa-solid fa-eye mr-1"></i>目視確認
+                        </span>
+                        <span class="text-xs bg-slate-50 text-slate-500 px-3 py-1.5 rounded-lg border border-slate-100">
+                            <i class="fa-solid fa-square-check mr-1"></i>承認ボタン
+                        </span>
+                    </div>
+
+                    <!-- 矢印 (デスクトップ) -->
+                    <div
+                        class="hidden md:flex absolute -right-5 top-1/2 -translate-y-1/2 z-10 w-10 h-10 rounded-full bg-gradient-to-r from-emerald-500 to-amber-500 text-white items-center justify-center shadow-lg">
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </div>
+                    <!-- 矢印 (モバイル) -->
+                    <div class="flex md:hidden justify-center mt-6">
+                        <div
+                            class="w-10 h-10 rounded-full bg-gradient-to-b from-emerald-500 to-amber-500 text-white flex items-center justify-center shadow-lg">
+                            <i class="fa-solid fa-arrow-down"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- カード3: 利益の還元 -->
+                <div class="vision-card card-reward bg-white rounded-2xl p-8 fade-in-up"
+                    style="transition-delay: 0.2s;">
+                    <div class="flex items-center justify-between mb-6">
+                        <div
+                            class="card-icon-wrap w-16 h-16 rounded-2xl bg-gradient-to-br from-amber-50 to-yellow-50 flex items-center justify-center">
+                            <i class="fa-solid fa-gift text-2xl text-amber-500"></i>
+                        </div>
+                        <span class="text-6xl font-black text-slate-100 select-none">03</span>
+                    </div>
+                    <div class="badge bg-amber-50 text-amber-600 mb-4">
+                        <i class="fa-solid fa-trophy text-xs"></i>
+                        DX BONUS
+                    </div>
+                    <h3 class="text-xl font-bold text-navy-500 mb-3">利益の還元</h3>
+                    <p class="text-slate-500 text-sm leading-relaxed mb-6">
+                        浮いた時間で生み出した利益は、<strong
+                            class="text-navy-400">DXボーナスとしてスタッフへ</strong>支給。DXの恩恵を全員が実感できる仕組みで、モチベーション向上。
+                    </p>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="text-xs bg-slate-50 text-slate-500 px-3 py-1.5 rounded-lg border border-slate-100">
+                            <i class="fa-solid fa-coins mr-1"></i>DXボーナス
+                        </span>
+                        <span class="text-xs bg-slate-50 text-slate-500 px-3 py-1.5 rounded-lg border border-slate-100">
+                            <i class="fa-solid fa-users mr-1"></i>全員Win
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- まとめバナー -->
+            <div
+                class="mt-16 bg-gradient-to-r from-navy-500 to-navy-400 rounded-2xl p-8 md:p-12 text-center fade-in-up relative overflow-hidden">
+                <div class="absolute inset-0 opacity-10">
+                    <div
+                        class="absolute top-0 right-0 w-96 h-96 bg-emerald-500 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2">
+                    </div>
+                    <div
+                        class="absolute bottom-0 left-0 w-64 h-64 bg-teal-500 rounded-full blur-3xl translate-y-1/2 -translate-x-1/2">
+                    </div>
+                </div>
+                <div class="relative z-10">
+                    <div class="flex items-center justify-center gap-6 flex-wrap mb-6">
+                        <div class="flex items-center gap-2 text-white/80">
+                            <i class="fa-solid fa-pen-ruler text-blue-400"></i>
+                            <span class="text-sm font-medium">AIが下書き</span>
+                        </div>
+                        <i class="fa-solid fa-chevron-right text-white/25"></i>
+                        <div class="flex items-center gap-2 text-white/80">
+                            <i class="fa-solid fa-user-check text-emerald-400"></i>
+                            <span class="text-sm font-medium">人間が承認</span>
+                        </div>
+                        <i class="fa-solid fa-chevron-right text-white/25"></i>
+                        <div class="flex items-center gap-3 text-white">
+                            <i class="fa-solid fa-gift text-amber-400 text-xl"></i>
+                            <span class="font-bold text-lg">利益をスタッフへ還元</span>
+                        </div>
+                    </div>
+                    <p class="text-white/50 text-sm max-w-xl mx-auto">
+                        AI × 人間 × インセンティブ設計で、安全・効率・モチベーションの三位一体を実現する次世代DXモデル。
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== フッター ===== -->
+    <footer class="footer-gradient py-16">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="grid md:grid-cols-3 gap-12 mb-12">
+                <div>
+                    <div class="flex items-center gap-3 mb-4">
+                        <div
+                            class="w-10 h-10 rounded-xl bg-gradient-to-br from-emerald-500 to-teal-400 flex items-center justify-center">
+                            <span class="text-white font-bold text-lg">N</span>
+                        </div>
+                        <span class="text-white font-bold text-xl tracking-tight">NexioG</span>
+                    </div>
+                    <p class="text-white/40 text-sm leading-relaxed">
+                        作業から、価値へ。<br>
+                        ネクシオグループの次世代DXで、<br>
+                        すべてのステークホルダーに利益を。
+                    </p>
+                </div>
+                <div>
+                    <h4 class="text-white font-semibold mb-4 text-sm">セクション</h4>
+                    <ul class="space-y-3">
+                        <li><a href="#vision" class="text-white/40 hover:text-white text-sm transition-colors"><i
+                                    class="fa-solid fa-chevron-right text-xs mr-2 text-emerald-500"></i>ビジョン</a></li>
+                        <li><a href="#system" class="text-white/40 hover:text-white text-sm transition-colors"><i
+                                    class="fa-solid fa-chevron-right text-xs mr-2 text-emerald-500"></i>システム構成</a></li>
+                        <li><a href="#evolution" class="text-white/40 hover:text-white text-sm transition-colors"><i
+                                    class="fa-solid fa-chevron-right text-xs mr-2 text-emerald-500"></i>働き方の進化</a></li>
+                        <li><a href="#hitl" class="text-white/40 hover:text-white text-sm transition-colors"><i
+                                    class="fa-solid fa-chevron-right text-xs mr-2 text-emerald-500"></i>運用体制</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-white font-semibold mb-4 text-sm">技術スタック</h4>
+                    <div class="flex flex-wrap gap-2">
+                        <span
+                            class="text-xs bg-white/5 text-white/40 px-3 py-1.5 rounded-lg border border-white/10">Gemini
+                            AI</span>
+                        <span
+                            class="text-xs bg-white/5 text-white/40 px-3 py-1.5 rounded-lg border border-white/10">LINE
+                            API</span>
+                        <span
+                            class="text-xs bg-white/5 text-white/40 px-3 py-1.5 rounded-lg border border-white/10">Google
+                            Workspace</span>
+                        <span
+                            class="text-xs bg-white/5 text-white/40 px-3 py-1.5 rounded-lg border border-white/10">Prompt
+                            Expander</span>
+                        <span
+                            class="text-xs bg-white/5 text-white/40 px-3 py-1.5 rounded-lg border border-white/10">Human-in-the-Loop</span>
+                    </div>
+                </div>
+            </div>
+            <div class="border-t border-white/10 pt-8 flex flex-col md:flex-row items-center justify-between gap-4">
+                <p class="text-white/25 text-xs">&copy; 2026 NexioG. 社内プレゼンテーション資料（Confidential）</p>
+                <p class="text-white/25 text-xs">Designed with <i class="fa-solid fa-heart text-emerald-500"></i> for DX
+                    Innovation</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- ===== JavaScript ===== -->
+    <script>
+        // ============================================
+        // 1. Mermaid.js 初期化
+        // ============================================
+        mermaid.initialize({
+            startOnLoad: true,
+            theme: 'base',
+            themeVariables: {
+                primaryColor: '#d1fae5',
+                primaryTextColor: '#1e3a5f',
+                primaryBorderColor: '#10b981',
+                lineColor: '#94a3b8',
+                secondaryColor: '#ecfdf5',
+                tertiaryColor: '#f5f3ff',
+                fontFamily: 'Inter, Noto Sans JP, sans-serif',
+                fontSize: '14px',
+            },
+            flowchart: {
+                htmlLabels: true,
+                curve: 'basis',
+                padding: 20,
+                nodeSpacing: 50,
+                rankSpacing: 70,
+            }
+        });
+
+        // ============================================
+        // 2. Chart.js - 積み上げ棒グラフ
+        // ============================================
+        document.addEventListener('DOMContentLoaded', function () {
+            const ctx = document.getElementById('dxChart').getContext('2d');
+
+            const chartData = {
+                labels: ['導入前', '1ヶ月後', '3ヶ月後', '半年後'],
+                datasets: [
+                    {
+                        label: '単純入力・転記・確認作業（Do）',
+                        data: [75, 50, 25, 10],
+                        backgroundColor: 'rgba(239, 68, 68, 0.75)',
+                        borderColor: 'rgba(239, 68, 68, 1)',
+                        borderWidth: 2,
+                        borderRadius: 6,
+                        borderSkipped: false,
+                    },
+                    {
+                        label: 'ヒアリング・助成金提案・コミュニケーション（Review & Value）',
+                        data: [25, 50, 75, 90],
+                        backgroundColor: 'rgba(16, 185, 129, 0.75)',
+                        borderColor: 'rgba(16, 185, 129, 1)',
+                        borderWidth: 2,
+                        borderRadius: 6,
+                        borderSkipped: false,
+                    }
+                ]
+            };
+
+            const chartOptions = {
+                responsive: true,
+                maintainAspectRatio: false,
+                animation: {
+                    duration: 2000,
+                    easing: 'easeInOutQuart',
+                    delay: function (context) {
+                        return context.dataIndex * 300;
+                    }
+                },
+                interaction: {
+                    intersect: false,
+                    mode: 'index',
+                },
+                plugins: {
+                    legend: {
+                        display: false,
+                    },
+                    tooltip: {
+                        backgroundColor: 'rgba(15, 30, 48, 0.95)',
+                        titleColor: '#ffffff',
+                        bodyColor: '#e2e8f0',
+                        borderColor: 'rgba(255, 255, 255, 0.1)',
+                        borderWidth: 1,
+                        cornerRadius: 12,
+                        padding: 14,
+                        titleFont: {
+                            family: 'Inter, Noto Sans JP, sans-serif',
+                            size: 13,
+                            weight: '600',
+                        },
+                        bodyFont: {
+                            family: 'Inter, Noto Sans JP, sans-serif',
+                            size: 12,
+                        },
+                        callbacks: {
+                            label: function (context) {
+                                return context.dataset.label + ': ' + context.parsed.y + '%';
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    x: {
+                        stacked: true,
+                        grid: {
+                            display: false,
+                        },
+                        border: {
+                            display: false,
+                        },
+                        ticks: {
+                            color: '#94a3b8',
+                            font: {
+                                family: 'Inter, Noto Sans JP, sans-serif',
+                                size: 13,
+                                weight: '500',
+                            },
+                            padding: 8,
+                        }
+                    },
+                    y: {
+                        stacked: true,
+                        max: 100,
+                        grid: {
+                            color: 'rgba(226, 232, 240, 0.6)',
+                            drawBorder: false,
+                        },
+                        border: {
+                            display: false,
+                        },
+                        ticks: {
+                            color: '#94a3b8',
+                            font: {
+                                family: 'Inter, Noto Sans JP, sans-serif',
+                                size: 12,
+                            },
+                            callback: function (value) {
+                                return value + '%';
+                            },
+                            stepSize: 25,
+                            padding: 12,
+                        }
+                    }
+                }
+            };
+
+            new Chart(ctx, {
+                type: 'bar',
+                data: chartData,
+                options: chartOptions,
+            });
+        });
+
+        // ============================================
+        // 3. スクロールアニメーション (IntersectionObserver)
+        // ============================================
+        const observerOptions = {
+            threshold: 0.15,
+            rootMargin: '0px 0px -60px 0px',
+        };
+
+        const observer = new IntersectionObserver(function (entries) {
+            entries.forEach(function (entry) {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.fade-in-up').forEach(function (el) {
+            observer.observe(el);
+        });
+
+        // ============================================
+        // 4. ナビゲーションバー スクロール時の背景変化
+        // ============================================
+        const navbar = document.getElementById('navbar');
+
+        window.addEventListener('scroll', function () {
+            if (window.scrollY > 80) {
+                navbar.classList.add('navbar-scrolled');
+            } else {
+                navbar.classList.remove('navbar-scrolled');
+            }
+        });
+
+        // ============================================
+        // 5. パーティクル生成
+        // ============================================
+        (function createParticles() {
+            const container = document.getElementById('particles');
+            if (!container) return;
+
+            const particleCount = 30;
+
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.classList.add('particle');
+
+                const size = Math.random() * 3 + 1;
+                particle.style.width = size + 'px';
+                particle.style.height = size + 'px';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.animationDuration = (Math.random() * 15 + 10) + 's';
+                particle.style.animationDelay = (Math.random() * 10) + 's';
+                particle.style.opacity = Math.random() * 0.3 + 0.05;
+
+                container.appendChild(particle);
+            }
+        })();
+
+        // ============================================
+        // 6. スムーズスクロール（ナビリンク）
+        // ============================================
+        document.querySelectorAll('a[href^="#"]').forEach(function (anchor) {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start',
+                    });
+                }
+            });
+        });
+    </script>
+
+</body>
+
+</html>

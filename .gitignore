@@ -1,12 +1,61 @@
-# Nexio LP ignore
-.gemini/
-*.log
+# =============================================
+# Nexio LP .gitignore
+# セキュリティ対策: 機密ファイルの流出防止
+# =============================================
+
+# ----- システムファイル -----
 .DS_Store
 Thumbs.db
+desktop.ini
+*.log
 
-# Unrelated files
-2025見積書.pdf
-技能実習生の受け入れにかかる費用.pdf
+# ----- Gemini / AI設定 -----
+.gemini/
+
+# ----- 機密ファイル（業務文書） -----
+# 見積書、契約書、請求書、提案書等
+*.pdf
+*.xlsx
+*.xls
+*.csv
+*.docx
+*.doc
+*.pptx
+*.ppt
+
+# ----- 認証情報・秘密鍵 -----
+*.env
+.env*
+*.key
+*.pem
+*.crt
+*.p12
+*.pfx
+*.jks
+
+# ----- 秘密情報ディレクトリ -----
+secrets/
+private/
+confidential/
+
+# ----- バックアップファイル -----
+*.bak
+*.backup
+*.old
+*.tmp
+*~
+
+# ----- Node.js -----
+node_modules/
+npm-debug.log*
+
+# ----- 大容量メディアファイル -----
+# ナレーション音声・動画（GitHub容量制限対策）
+*.wav
+*.mp4
+tmp_video/
+
+# ----- デバッグ用スクリーンショット等 -----
 after_submission.png
 after_typing.png
 before_interaction.png

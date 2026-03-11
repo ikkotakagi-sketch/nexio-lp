@@ -1,441 +1,880 @@
 <!DOCTYPE html>
 <html lang="ja">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>NEXIO GROUP — Reel</title>
-<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;800;900&family=Noto+Sans+JP:wght@300;400;500;700&display=swap" rel="stylesheet">
-<style>
-*{margin:0;padding:0;box-sizing:border-box}
-:root{
-  --navy:#0a1e3d;--green:#00c291;--white:#fff;
-}
-html,body{width:100%;height:100%;overflow:hidden;background:#000;font-family:'Outfit','Noto Sans JP',sans-serif}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NEXIO GROUP — Reel</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;800;900&family=Noto+Sans+JP:wght@300;400;500;700&display=swap"
+        rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box
+        }
 
-/* Container — 9:16 centered */
-.reel{
-  position:relative;width:100vw;height:100vh;
-  max-width:450px;margin:0 auto;overflow:hidden;background:var(--navy);
-}
+        :root {
+            --navy: #0a1e3d;
+            --green: #00c291;
+            --white: #fff;
+            --gold: #d4a853
+        }
 
-/* Slide base */
-.slide{
-  position:absolute;inset:0;opacity:0;
-  display:flex;flex-direction:column;justify-content:flex-end;
-  transition:opacity 0.8s ease;z-index:1;
-}
-.slide.active{opacity:1;z-index:2}
+        html,
+        body {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background: #000;
+            font-family: 'Outfit', 'Noto Sans JP', sans-serif
+        }
 
-/* Background image with Ken Burns */
-.slide-bg{
-  position:absolute;inset:0;
-  background-size:cover;background-position:center;
-  animation:kenburns 10s ease-in-out forwards;
-}
-@keyframes kenburns{
-  0%{transform:scale(1)}
-  100%{transform:scale(1.12)}
-}
+        .reel {
+            position: relative;
+            width: 100vw;
+            height: 100vh;
+            max-width: 450px;
+            margin: 0 auto;
+            overflow: hidden;
+            background: var(--navy)
+        }
 
-/* Overlay gradient */
-.slide-overlay{
-  position:absolute;inset:0;
-  background:linear-gradient(0deg,rgba(10,30,61,0.92) 0%,rgba(10,30,61,0.3) 40%,rgba(10,30,61,0.15) 100%);
-}
+        /* ===== SLIDE ===== */
+        .slide {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            clip-path: inset(0 0 100% 0);
+            transition: clip-path 0.7s cubic-bezier(0.65, 0, 0.35, 1);
+            z-index: 1
+        }
 
-/* Content area */
-.slide-content{
-  position:relative;z-index:2;padding:40px 28px 60px;
-  display:flex;flex-direction:column;gap:12px;
-}
+        .slide.active {
+            clip-path: inset(0 0 0 0);
+            z-index: 2
+        }
 
-/* Label tag */
-.s-label{
-  font-size:0.55rem;letter-spacing:5px;text-transform:uppercase;
-  color:var(--green);font-weight:700;
-  opacity:0;transform:translateY(20px);
-  animation:fadeUp 0.6s 0.3s ease forwards;
-}
+        .slide.prev {
+            clip-path: inset(100% 0 0 0);
+            z-index: 1
+        }
 
-/* Main heading */
-.s-title{
-  font-size:1.8rem;font-weight:800;color:var(--white);line-height:1.2;
-  opacity:0;transform:translateY(20px);
-  animation:fadeUp 0.6s 0.5s ease forwards;
-}
-.s-title em{font-style:normal;color:var(--green)}
+        /* Background image */
+        .slide-bg {
+            position: absolute;
+            inset: -20px;
+            background-size: cover;
+            background-position: center;
+            filter: brightness(0.9)
+        }
 
-/* Narration text (テロップ) */
-.s-narration{
-  font-size:0.85rem;color:rgba(255,255,255,0.8);line-height:1.8;
-  font-family:'Noto Sans JP',sans-serif;
-  opacity:0;transform:translateY(20px);
-  animation:fadeUp 0.6s 0.7s ease forwards;
-}
+        .slide.active .slide-bg {
+            animation: parallax 10s ease-out forwards
+        }
 
-/* Step number */
-.s-step{
-  font-size:3.5rem;font-weight:900;color:var(--green);opacity:0.15;
-  line-height:1;position:absolute;top:40px;right:28px;z-index:2;
-  opacity:0;animation:fadeUp 0.5s 0.2s ease forwards;
-}
+        @keyframes parallax {
+            from {
+                transform: scale(1.1) translateY(10px)
+            }
 
-@keyframes fadeUp{
-  to{opacity:1;transform:translateY(0)}
-}
+            to {
+                transform: scale(1.15) translateY(-10px)
+            }
+        }
 
-/* Progress bar */
-.progress{
-  position:absolute;top:0;left:0;right:0;z-index:100;
-  display:flex;gap:4px;padding:12px 16px;
-}
-.progress-seg{
-  flex:1;height:3px;background:rgba(255,255,255,0.2);
-  border-radius:3px;overflow:hidden;
-}
-.progress-fill{
-  height:100%;width:0;background:var(--green);border-radius:3px;
-}
-.progress-seg.done .progress-fill{width:100%;transition:none}
-.progress-seg.active .progress-fill{
-  width:100%;
-  transition:width linear;
-}
+        /* Gradient overlay — less aggressive to show more photo */
+        .slide-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(0deg, rgba(10, 30, 61, 0.88) 0%, rgba(10, 30, 61, 0.15) 35%, rgba(10, 30, 61, 0.05) 60%, rgba(10, 30, 61, 0.2) 100%)
+        }
 
-/* Logo watermark */
-.logo-mark{
-  position:absolute;top:28px;left:20px;z-index:100;
-  display:flex;align-items:center;gap:8px;
-}
-.logo-n{
-  width:28px;height:28px;background:var(--white);color:var(--navy);
-  display:flex;align-items:center;justify-content:center;
-  font-weight:900;font-size:0.8rem;border-radius:7px;
-}
-.logo-t{
-  font-weight:800;font-size:0.8rem;color:var(--white);letter-spacing:3px;
-}
-.logo-t span{opacity:0.4;font-size:0.5rem;margin-left:2px;letter-spacing:2px}
+        /* Floating particles */
+        .particles {
+            position: absolute;
+            inset: 0;
+            z-index: 1;
+            pointer-events: none;
+            overflow: hidden
+        }
 
-/* CTA Slide */
-.cta-slide .slide-content{
-  justify-content:center;align-items:center;text-align:center;
-  height:100%;padding-bottom:100px;
-}
-.cta-btn{
-  display:inline-flex;align-items:center;gap:8px;
-  padding:18px 40px;border-radius:60px;
-  background:var(--green);color:var(--white);
-  font-weight:700;font-size:0.95rem;letter-spacing:1px;
-  text-decoration:none;
-  box-shadow:0 8px 32px rgba(0,194,145,0.4);
-  opacity:0;transform:translateY(20px);
-  animation:fadeUp 0.6s 1s ease forwards;
-  transition:transform 0.3s,box-shadow 0.3s;
-}
-.cta-btn:hover{transform:translateY(-3px) !important;box-shadow:0 12px 40px rgba(0,194,145,0.5)}
-.cta-btn svg{width:18px;height:18px}
+        .particle {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: rgba(0, 194, 145, 0.3);
+            border-radius: 50%;
+            animation: float linear infinite
+        }
 
-.cta-sub{
-  font-size:0.7rem;color:rgba(255,255,255,0.5);
-  letter-spacing:2px;text-transform:uppercase;
-  opacity:0;animation:fadeUp 0.5s 1.3s ease forwards;
-  margin-top:16px;
-}
+        @keyframes float {
+            0% {
+                transform: translateY(100vh) translateX(0);
+                opacity: 0
+            }
 
-/* Sound control */
-.sound-btn{
-  position:absolute;bottom:20px;right:20px;z-index:100;
-  background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.2);
-  color:var(--white);width:36px;height:36px;border-radius:50%;
-  display:flex;align-items:center;justify-content:center;cursor:pointer;
-  font-size:0.8rem;backdrop-filter:blur(8px);
-}
+            10% {
+                opacity: 1
+            }
 
-/* Tap to play overlay */
-.play-overlay{
-  position:absolute;inset:0;z-index:200;
-  background:rgba(10,30,61,0.95);
-  display:flex;flex-direction:column;align-items:center;justify-content:center;
-  gap:20px;cursor:pointer;
-}
-.play-overlay.hidden{display:none}
-.play-circle{
-  width:80px;height:80px;border-radius:50%;
-  border:2px solid var(--green);
-  display:flex;align-items:center;justify-content:center;
-  animation:pulse 2s ease-in-out infinite;
-}
-@keyframes pulse{
-  0%,100%{box-shadow:0 0 0 0 rgba(0,194,145,0.3)}
-  50%{box-shadow:0 0 0 20px rgba(0,194,145,0)}
-}
-.play-circle svg{width:32px;height:32px;fill:var(--green);margin-left:4px}
-.play-text{font-size:0.65rem;letter-spacing:4px;color:rgba(255,255,255,0.5);text-transform:uppercase}
+            90% {
+                opacity: 1
+            }
 
-/* Divider decoration */
-.s-divider{
-  width:40px;height:2px;background:var(--green);border-radius:2px;
-  opacity:0;animation:fadeUp 0.5s 0.9s ease forwards;
-}
-</style>
+            100% {
+                transform: translateY(-20px) translateX(30px);
+                opacity: 0
+            }
+        }
+
+        /* Content */
+        .slide-content {
+            position: relative;
+            z-index: 3;
+            padding: 32px 28px 56px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px
+        }
+
+        /* Step badge — pill with glow */
+        .s-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 16px;
+            border-radius: 30px;
+            background: rgba(0, 194, 145, 0.12);
+            border: 1px solid rgba(0, 194, 145, 0.3);
+            width: fit-content;
+            font-size: 0.55rem;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            color: var(--green);
+            font-weight: 700;
+            opacity: 0;
+            transform: translateY(16px);
+            backdrop-filter: blur(4px)
+        }
+
+        .slide.active .s-badge {
+            animation: fadeUp 0.5s 0.2s ease forwards
+        }
+
+        /* Title */
+        .s-title {
+            font-size: 1.7rem;
+            font-weight: 800;
+            color: var(--white);
+            line-height: 1.25;
+            opacity: 0;
+            transform: translateY(20px)
+        }
+
+        .slide.active .s-title {
+            animation: fadeUp 0.5s 0.4s ease forwards
+        }
+
+        .s-title em {
+            font-style: normal;
+            color: var(--green)
+        }
+
+        /* Decorative line */
+        .s-line {
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, var(--green), transparent);
+            border-radius: 2px
+        }
+
+        .slide.active .s-line {
+            animation: lineGrow 0.6s 0.6s ease forwards
+        }
+
+        @keyframes lineGrow {
+            to {
+                width: 48px
+            }
+        }
+
+        /* Narration — typewriter style reveal */
+        .s-narration {
+            font-size: 0.82rem;
+            color: rgba(255, 255, 255, 0.85);
+            line-height: 1.9;
+            font-family: 'Noto Sans JP', sans-serif;
+            font-weight: 400
+        }
+
+        .nar-line {
+            display: block;
+            opacity: 0;
+            transform: translateX(-12px);
+            filter: blur(4px)
+        }
+
+        .slide.active .nar-line:nth-child(1) {
+            animation: narIn 0.4s 0.7s ease forwards
+        }
+
+        .slide.active .nar-line:nth-child(2) {
+            animation: narIn 0.4s 1.1s ease forwards
+        }
+
+        .slide.active .nar-line:nth-child(3) {
+            animation: narIn 0.4s 1.5s ease forwards
+        }
+
+        @keyframes narIn {
+            to {
+                opacity: 1;
+                transform: translateX(0);
+                filter: blur(0)
+            }
+        }
+
+        /* Step number */
+        .s-num {
+            position: absolute;
+            top: 60px;
+            right: 24px;
+            z-index: 3;
+            font-size: 5rem;
+            font-weight: 900;
+            color: var(--green);
+            line-height: 1;
+            opacity: 0;
+            transform: translateY(-20px) scale(1.3)
+        }
+
+        .slide.active .s-num {
+            animation: numIn 0.6s 0.15s cubic-bezier(0.34, 1.56, 0.64, 1) forwards
+        }
+
+        @keyframes numIn {
+            to {
+                opacity: 0.08;
+                transform: translateY(0) scale(1)
+            }
+        }
+
+        @keyframes fadeUp {
+            to {
+                opacity: 1;
+                transform: translateY(0)
+            }
+        }
+
+        /* ===== PROGRESS ===== */
+        .progress {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            display: flex;
+            gap: 4px;
+            padding: 14px 16px
+        }
+
+        .progress-seg {
+            flex: 1;
+            height: 3px;
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 3px;
+            overflow: hidden
+        }
+
+        .progress-fill {
+            height: 100%;
+            width: 0;
+            background: var(--green);
+            border-radius: 3px;
+            box-shadow: 0 0 8px rgba(0, 194, 145, 0.5)
+        }
+
+        .progress-seg.done .progress-fill {
+            width: 100%;
+            transition: none
+        }
+
+        .progress-seg.active .progress-fill {
+            width: 100%;
+            transition: width linear
+        }
+
+        /* ===== LOGO ===== */
+        .logo-mark {
+            position: absolute;
+            top: 30px;
+            left: 20px;
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            gap: 8px
+        }
+
+        .logo-n {
+            width: 26px;
+            height: 26px;
+            background: var(--green);
+            color: var(--white);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 900;
+            font-size: 0.7rem;
+            border-radius: 6px
+        }
+
+        .logo-t {
+            font-weight: 800;
+            font-size: 0.75rem;
+            color: var(--white);
+            letter-spacing: 3px
+        }
+
+        .logo-t span {
+            opacity: 0.35;
+            font-size: 0.45rem;
+            margin-left: 2px;
+            letter-spacing: 2px
+        }
+
+        /* ===== CTA ===== */
+        .cta-slide .slide-overlay {
+            background: rgba(10, 30, 61, 0.85)
+        }
+
+        .cta-slide .slide-content {
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            height: 100%;
+            padding-bottom: 80px
+        }
+
+        .cta-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 18px 44px;
+            border-radius: 60px;
+            background: linear-gradient(135deg, var(--green), #00a67d);
+            color: var(--white);
+            font-weight: 700;
+            font-size: 0.95rem;
+            letter-spacing: 1px;
+            text-decoration: none;
+            box-shadow: 0 8px 32px rgba(0, 194, 145, 0.35), 0 0 0 1px rgba(0, 194, 145, 0.2);
+            opacity: 0;
+            transform: translateY(20px) scale(0.95);
+            transition: transform 0.3s, box-shadow 0.3s
+        }
+
+        .slide.active .cta-btn {
+            animation: ctaIn 0.6s 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) forwards
+        }
+
+        @keyframes ctaIn {
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1)
+            }
+        }
+
+        .cta-btn:hover {
+            transform: translateY(-3px) scale(1.02) !important;
+            box-shadow: 0 12px 40px rgba(0, 194, 145, 0.5)
+        }
+
+        .cta-btn svg {
+            width: 18px;
+            height: 18px
+        }
+
+        .cta-sub {
+            font-size: 0.65rem;
+            color: rgba(255, 255, 255, 0.4);
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            opacity: 0;
+            margin-top: 16px
+        }
+
+        .slide.active .cta-sub {
+            animation: fadeUp 0.5s 1.2s ease forwards
+        }
+
+        /* ===== SOUND ===== */
+        .sound-btn {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            z-index: 100;
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            color: var(--white);
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 0.85rem;
+            backdrop-filter: blur(8px);
+            transition: all 0.3s
+        }
+
+        .sound-btn.on {
+            border-color: var(--green);
+            background: rgba(0, 194, 145, 0.12)
+        }
+
+        /* ===== PLAY OVERLAY ===== */
+        .play-overlay {
+            position: absolute;
+            inset: 0;
+            z-index: 200;
+            background: var(--navy);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 24px;
+            cursor: pointer
+        }
+
+        .play-overlay.hidden {
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.6s
+        }
+
+        .play-circle {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            border: 1.5px solid var(--green);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: glow 2.5s ease-in-out infinite
+        }
+
+        @keyframes glow {
+
+            0%,
+            100% {
+                box-shadow: 0 0 0 0 rgba(0, 194, 145, 0.25), 0 0 20px rgba(0, 194, 145, 0.1)
+            }
+
+            50% {
+                box-shadow: 0 0 0 16px rgba(0, 194, 145, 0), 0 0 40px rgba(0, 194, 145, 0.2)
+            }
+        }
+
+        .play-circle svg {
+            width: 28px;
+            height: 28px;
+            fill: var(--green);
+            margin-left: 3px
+        }
+
+        .play-text {
+            font-size: 0.6rem;
+            letter-spacing: 5px;
+            color: rgba(255, 255, 255, 0.35);
+            text-transform: uppercase
+        }
+
+        .play-hint {
+            font-size: 0.7rem;
+            color: rgba(255, 255, 255, 0.25);
+            font-family: 'Noto Sans JP', sans-serif
+        }
+
+        /* ===== SLIDE COUNTER (bottom left) ===== */
+        .slide-counter {
+            position: absolute;
+            bottom: 24px;
+            left: 24px;
+            z-index: 100;
+            font-size: 0.6rem;
+            letter-spacing: 3px;
+            color: rgba(255, 255, 255, 0.25)
+        }
+
+        .slide-counter .current {
+            color: var(--green);
+            font-weight: 700
+        }
+    </style>
 </head>
+
 <body>
 
-<div class="reel" id="reel">
+    <div class="reel" id="reel">
 
-  <!-- Play overlay -->
-  <div class="play-overlay" id="playOverlay">
-    <div class="play-circle">
-      <svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg>
+        <div class="play-overlay" id="playOverlay">
+            <div class="play-circle">
+                <svg viewBox="0 0 24 24">
+                    <polygon points="6,3 20,12 6,21" />
+                </svg>
+            </div>
+            <div class="play-text">Tap to Play</div>
+            <div class="play-hint">🔊 BGM付き</div>
+        </div>
+
+        <div class="logo-mark">
+            <div class="logo-n">N</div>
+            <div class="logo-t">NEXIO<span>GROUP</span></div>
+        </div>
+
+        <div class="progress" id="progress"></div>
+
+        <!-- Slide 0: Hero -->
+        <div class="slide" data-dur="11" data-nar="外国人雇用のことなら、ネクシオグループにお任せください。採用から定着、成長まで、ワンストップでサポートします。">
+            <div class="slide-bg" style="background-image:url(nexio_hero.png)"></div>
+            <div class="slide-overlay"></div>
+            <div class="particles" data-count="12"></div>
+            <div class="slide-content">
+                <div class="s-badge">Your Compass to the Next Society</div>
+                <h1 class="s-title">外国人雇用の<br><em>未来を切り拓く。</em></h1>
+                <div class="s-line"></div>
+                <p class="s-narration">
+                    <span class="nar-line">採用から定着、そして成長へ。</span>
+                    <span class="nar-line">ネクシオグループの</span>
+                    <span class="nar-line">ワンストップ支援をご紹介します。</span>
+                </p>
+            </div>
+        </div>
+
+        <!-- Slide 1: About -->
+        <div class="slide" data-dur="10" data-nar="私たちは、4つの専門法人がひとつになったグループです。採用、ビザ申請、労務管理、キャリア支援、すべてをカバーします。">
+            <div class="slide-bg" style="background-image:url(nexio_about.png)"></div>
+            <div class="slide-overlay"></div>
+            <div class="particles" data-count="8"></div>
+            <div class="slide-content">
+                <div class="s-badge">About Nexio Group</div>
+                <h1 class="s-title">4つの専門法人が<br><em>連携する</em>グループ。</h1>
+                <div class="s-line"></div>
+                <p class="s-narration">
+                    <span class="nar-line">人材派遣・労務管理・ビザ申請・</span>
+                    <span class="nar-line">技能実習の4分野を網羅。</span>
+                    <span class="nar-line">静岡県三島市から全国の企業を支援。</span>
+                </p>
+            </div>
+        </div>
+
+        <!-- Slide 2: Step 01 -->
+        <div class="slide" data-dur="9" data-nar="御社にぴったりの人材を見つけます。海外のパートナーと連携して、スキルも人柄もマッチする人材をお届けします。">
+            <div class="slide-bg" style="background-image:url(step_recruit.png)"></div>
+            <div class="slide-overlay"></div>
+            <div class="particles" data-count="8"></div>
+            <span class="s-num">01</span>
+            <div class="slide-content">
+                <div class="s-badge">Step 01 — Recruit & Match</div>
+                <h1 class="s-title">最適な人材を<br><em>見つける。</em></h1>
+                <div class="s-line"></div>
+                <p class="s-narration">
+                    <span class="nar-line">海外送出機関との連携で</span>
+                    <span class="nar-line">企業ニーズに合った人材を厳選。</span>
+                    <span class="nar-line">技能・適性・文化適合を考慮します。</span>
+                </p>
+            </div>
+        </div>
+
+        <!-- Slide 3: Step 02 -->
+        <div class="slide" data-dur="10" data-nar="ビザの取得もお任せください。年間200件超の実績を持つ行政書士が、スムーズなビザ取得を実現します。">
+            <div class="slide-bg" style="background-image:url(step_visa.png)"></div>
+            <div class="slide-overlay"></div>
+            <div class="particles" data-count="8"></div>
+            <span class="s-num">02</span>
+            <div class="slide-content">
+                <div class="s-badge">Step 02 — Visa & Legal</div>
+                <h1 class="s-title">在留資格を<br><em>確実に取得。</em></h1>
+                <div class="s-line"></div>
+                <p class="s-narration">
+                    <span class="nar-line">年間200件以上の申請実績。</span>
+                    <span class="nar-line">専門行政書士が法的リスクを回避し</span>
+                    <span class="nar-line">スムーズな入国・就労を実現します。</span>
+                </p>
+            </div>
+        </div>
+
+        <!-- Slide 4: Step 03 -->
+        <div class="slide" data-dur="9" data-nar="働く環境を整えます。保険手続きや就業規則、助成金申請まで、社労士チームがまとめて対応します。">
+            <div class="slide-bg" style="background-image:url(step_labor.png)"></div>
+            <div class="slide-overlay"></div>
+            <div class="particles" data-count="8"></div>
+            <span class="s-num">03</span>
+            <div class="slide-content">
+                <div class="s-badge">Step 03 — Labor & Insurance</div>
+                <h1 class="s-title">労務環境を<br><em>整備する。</em></h1>
+                <div class="s-line"></div>
+                <p class="s-narration">
+                    <span class="nar-line">社会保険・労働保険の手続き、</span>
+                    <span class="nar-line">就業規則の策定、助成金申請まで</span>
+                    <span class="nar-line">社労士チームが一元管理。</span>
+                </p>
+            </div>
+        </div>
+
+        <!-- Slide 5: Step 04 -->
+        <div class="slide" data-dur="9" data-nar="入社後のフォローも万全です。日本語教育やキャリア研修で、長く活躍できる環境を支援します。">
+            <div class="slide-bg" style="background-image:url(step_growth.png)"></div>
+            <div class="slide-overlay"></div>
+            <div class="particles" data-count="8"></div>
+            <span class="s-num">04</span>
+            <div class="slide-content">
+                <div class="s-badge">Step 04 — Retention & Growth</div>
+                <h1 class="s-title">定着と成長を<br><em>支える。</em></h1>
+                <div class="s-line"></div>
+                <p class="s-narration">
+                    <span class="nar-line">定期訪問・日本語教育・</span>
+                    <span class="nar-line">キャリアアップ研修で</span>
+                    <span class="nar-line">長期的な成功をサポートします。</span>
+                </p>
+            </div>
+        </div>
+
+        <!-- Slide 6: CTA -->
+        <div class="slide cta-slide" data-dur="8" data-nar="外国人雇用のことなら、ネクシオグループへ。まずはお気軽にお問い合わせください！">
+            <div class="slide-bg" style="background-image:url(nexio_hero.png)"></div>
+            <div class="slide-overlay"></div>
+            <div class="particles" data-count="16"></div>
+            <div class="slide-content">
+                <div class="s-badge">Nexio Group</div>
+                <h1 class="s-title" style="text-align:center">採用から定着まで、<br><em>まるごと</em>ご相談ください。</h1>
+                <div class="s-line" style="margin:0 auto"></div>
+                <a href="https://ikkotakagi-sketch.github.io/nexio-lp/#contact" target="_blank" class="cta-btn">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
+                        <polyline points="22,6 12,13 2,6" />
+                    </svg>
+                    お問い合わせはこちら
+                </a>
+                <div class="cta-sub">無料相談受付中</div>
+            </div>
+        </div>
+
+        <div class="slide-counter" id="counter"><span class="current">1</span> / 7</div>
+        <button class="sound-btn" id="soundBtn" title="BGM ON/OFF">♪</button>
     </div>
-    <div class="play-text">Tap to Play</div>
-  </div>
 
-  <!-- Logo -->
-  <div class="logo-mark">
-    <div class="logo-n">N</div>
-    <div class="logo-t">NEXIO<span>GROUP</span></div>
-  </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const slides = document.querySelectorAll('.slide');
+            const progressBar = document.getElementById('progress');
+            const playOverlay = document.getElementById('playOverlay');
+            const soundBtn = document.getElementById('soundBtn');
+            const counter = document.getElementById('counter');
+            let current = 0, timer = null, audioCtx = null, bgmPlaying = false, bgmNodes = [], bgmTimer = null, bgmHatTimer = null;
 
-  <!-- Progress -->
-  <div class="progress" id="progress"></div>
+            // Particles
+            document.querySelectorAll('.particles').forEach(p => {
+                const count = parseInt(p.dataset.count) || 10;
+                for (let i = 0; i < count; i++) {
+                    const dot = document.createElement('div');
+                    dot.className = 'particle';
+                    dot.style.left = Math.random() * 100 + '%';
+                    dot.style.animationDuration = (6 + Math.random() * 8) + 's';
+                    dot.style.animationDelay = Math.random() * 6 + 's';
+                    dot.style.width = dot.style.height = (1 + Math.random() * 2) + 'px';
+                    p.appendChild(dot);
+                }
+            });
 
-  <!-- Slide 0: Opening -->
-  <div class="slide" data-dur="8">
-    <div class="slide-bg" style="background-image:url(nexio_hero.png)"></div>
-    <div class="slide-overlay"></div>
-    <div class="slide-content">
-      <div class="s-label">YOUR COMPASS TO THE NEXT SOCIETY</div>
-      <h1 class="s-title">外国人雇用の<br><em>未来を切り拓く。</em></h1>
-      <div class="s-divider"></div>
-      <p class="s-narration">採用から定着、そして成長へ。<br>ネクシオグループの<br>ワンストップ支援をご紹介します。</p>
-    </div>
-  </div>
+            // Progress
+            slides.forEach(() => {
+                const seg = document.createElement('div');
+                seg.className = 'progress-seg';
+                seg.innerHTML = '<div class="progress-fill"></div>';
+                progressBar.appendChild(seg);
+            });
+            const segs = progressBar.querySelectorAll('.progress-seg');
 
-  <!-- Slide 1: About -->
-  <div class="slide" data-dur="8">
-    <div class="slide-bg" style="background-image:url(nexio_about.png)"></div>
-    <div class="slide-overlay"></div>
-    <div class="slide-content">
-      <div class="s-label">ABOUT NEXIO GROUP</div>
-      <h1 class="s-title">4つの専門法人が<br><em>連携する</em>グループ。</h1>
-      <div class="s-divider"></div>
-      <p class="s-narration">人材派遣・労務管理・ビザ申請・<br>技能実習の4分野を網羅。<br>静岡県三島市から全国の企業を支援。</p>
-    </div>
-  </div>
+            // === Upbeat Bright Corporate BGM (120 BPM, C major) ===
+            function startBGM() {
+                if (audioCtx) return;
+                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                const master = audioCtx.createGain();
+                master.gain.value = 0.18;
+                master.connect(audioCtx.destination);
+                // Bright delay
+                const dly = audioCtx.createDelay(); dly.delayTime.value = 0.15;
+                const fb = audioCtx.createGain(); fb.gain.value = 0.15;
+                const dlpf = audioCtx.createBiquadFilter(); dlpf.type = 'lowpass'; dlpf.frequency.value = 4000;
+                dly.connect(dlpf); dlpf.connect(fb); fb.connect(dly); dly.connect(master);
+                const send = audioCtx.createGain(); send.gain.value = 0.25; send.connect(dly);
+                const dry = audioCtx.createGain(); dry.gain.value = 0.75; dry.connect(master);
+                const bright = audioCtx.createBiquadFilter();
+                bright.type = 'highshelf'; bright.frequency.value = 2000; bright.gain.value = 3;
+                bright.connect(dry); bright.connect(send);
 
-  <!-- Slide 2: Step 01 -->
-  <div class="slide" data-dur="8">
-    <div class="slide-bg" style="background-image:url(step_recruit.png)"></div>
-    <div class="slide-overlay"></div>
-    <span class="s-step">01</span>
-    <div class="slide-content">
-      <div class="s-label">STEP 01 — RECRUIT & MATCH</div>
-      <h1 class="s-title">最適な人材を<br><em>見つける。</em></h1>
-      <div class="s-divider"></div>
-      <p class="s-narration">海外送出機関との連携で<br>企業ニーズに合った人材を厳選。<br>技能・適性・文化適合を考慮します。</p>
-    </div>
-  </div>
+                // Major key chords: C → G → Am → F (pop progression)
+                const chords = [
+                    [261.63, 329.63, 392.00, 523.25], // C  (C4,E4,G4,C5)
+                    [196.00, 246.94, 293.66, 392.00], // G  (G3,B3,D4,G4)
+                    [220.00, 261.63, 329.63, 440.00], // Am (A3,C4,E4,A4)
+                    [174.61, 220.00, 261.63, 349.23], // F  (F3,A3,C4,F4)
+                ];
+                const BPM = 120, beatDur = 60 / BPM, barDur = beatDur * 4;
 
-  <!-- Slide 3: Step 02 -->
-  <div class="slide" data-dur="8">
-    <div class="slide-bg" style="background-image:url(step_visa.png)"></div>
-    <div class="slide-overlay"></div>
-    <span class="s-step">02</span>
-    <div class="slide-content">
-      <div class="s-label">STEP 02 — VISA & LEGAL</div>
-      <h1 class="s-title">在留資格を<br><em>確実に取得。</em></h1>
-      <div class="s-divider"></div>
-      <p class="s-narration">年間200件以上の申請実績。<br>専門行政書士が法的リスクを回避し<br>スムーズな入国・就労を実現します。</p>
-    </div>
-  </div>
+                function playArp() {
+                    const now = audioCtx.currentTime;
+                    for (let b = 0; b < 32; b++) {
+                        const ch = chords[b % 4], bs = now + b * barDur;
+                        // Upbeat 16th-note arpeggio pattern
+                        for (let n = 0; n < 16; n++) {
+                            const t = bs + n * (beatDur / 4);
+                            const idx = [0, 2, 1, 3, 2, 0, 3, 1, 0, 3, 2, 1, 3, 0, 1, 2][n];
+                            const f = ch[idx];
+                            const oct = (n % 4 === 0) ? 1 : (n % 8 === 4) ? 2 : 1;
+                            const vol = (n % 4 === 0) ? 0.07 : 0.04;
+                            note(f * oct, t, beatDur * 0.35, vol);
+                        }
+                        // Punchy bass on beats 1 and 3
+                        bass(ch[0] * 0.5, bs, beatDur * 0.8, 0.12);
+                        bass(ch[0] * 0.5, bs + beatDur * 2, beatDur * 0.6, 0.09);
+                        // Extra bass on beat 2.5 (offbeat groove)
+                        bass(ch[2] * 0.25, bs + beatDur * 1.5, beatDur * 0.4, 0.05);
+                    }
+                    bgmTimer = setTimeout(playArp, 32 * barDur * 1000 - 300);
+                }
+                function note(f, t, d, v) {
+                    const o = audioCtx.createOscillator(), g = audioCtx.createGain(), fl = audioCtx.createBiquadFilter();
+                    o.type = 'square'; o.frequency.value = f; o.detune.value = (Math.random() - 0.5) * 5;
+                    fl.type = 'lowpass';
+                    fl.frequency.setValueAtTime(1200, t); fl.frequency.linearRampToValueAtTime(5000, t + d * 0.15); fl.frequency.linearRampToValueAtTime(1500, t + d);
+                    g.gain.setValueAtTime(0, t); g.gain.linearRampToValueAtTime(v, t + 0.008); g.gain.linearRampToValueAtTime(v * 0.3, t + d * 0.5); g.gain.linearRampToValueAtTime(0, t + d);
+                    o.connect(fl); fl.connect(g); g.connect(bright); o.start(t); o.stop(t + d + 0.02);
+                }
+                function bass(f, t, d, v) {
+                    const o = audioCtx.createOscillator(), g = audioCtx.createGain();
+                    o.type = 'sine'; o.frequency.value = f;
+                    g.gain.setValueAtTime(0, t); g.gain.linearRampToValueAtTime(v, t + 0.01); g.gain.linearRampToValueAtTime(v * 0.4, t + d * 0.5); g.gain.linearRampToValueAtTime(0, t + d);
+                    o.connect(g); g.connect(dry); o.start(t); o.stop(t + d + 0.02);
+                }
+                function playHats() {
+                    const now = audioCtx.currentTime;
+                    for (let b = 0; b < 32; b++) {
+                        const bs = now + b * barDur;
+                        for (let n = 0; n < 8; n++) {
+                            const accent = (n % 2 === 0) ? 0.03 : 0.015;
+                            hat(bs + n * (beatDur / 2), accent);
+                        }
+                        // Kick on 1 and 3
+                        kick(bs, 0.08); kick(bs + beatDur * 2, 0.06);
+                    }
+                    bgmHatTimer = setTimeout(playHats, 32 * barDur * 1000 - 300);
+                }
+                function hat(t, v) {
+                    const sz = audioCtx.sampleRate * 0.025, buf = audioCtx.createBuffer(1, sz, audioCtx.sampleRate), d = buf.getChannelData(0);
+                    for (let i = 0; i < sz; i++) d[i] = Math.random() * 2 - 1;
+                    const s = audioCtx.createBufferSource(); s.buffer = buf;
+                    const fl = audioCtx.createBiquadFilter(); fl.type = 'highpass'; fl.frequency.value = 8000;
+                    const g = audioCtx.createGain(); g.gain.setValueAtTime(v, t); g.gain.exponentialRampToValueAtTime(0.001, t + 0.025);
+                    s.connect(fl); fl.connect(g); g.connect(dry); s.start(t); s.stop(t + 0.03);
+                }
+                function kick(t, v) {
+                    const o = audioCtx.createOscillator(), g = audioCtx.createGain();
+                    o.type = 'sine'; o.frequency.setValueAtTime(150, t); o.frequency.exponentialRampToValueAtTime(40, t + 0.1);
+                    g.gain.setValueAtTime(v, t); g.gain.exponentialRampToValueAtTime(0.001, t + 0.15);
+                    o.connect(g); g.connect(dry); o.start(t); o.stop(t + 0.2);
+                }
+                // Bright shimmer pad
+                [523.25, 659.25, 783.99].forEach(f => {
+                    const o = audioCtx.createOscillator(), g = audioCtx.createGain();
+                    o.type = 'sine'; o.frequency.value = f; o.detune.value = (Math.random() - 0.5) * 6; g.gain.value = 0.012;
+                    const lfo = audioCtx.createOscillator(), lg = audioCtx.createGain();
+                    lfo.frequency.value = 0.15 + Math.random() * 0.2; lg.gain.value = 3;
+                    lfo.connect(lg); lg.connect(o.frequency); o.connect(g); g.connect(bright); o.start(); lfo.start();
+                    bgmNodes.push(o, lfo);
+                });
+                playArp(); playHats();
+                bgmPlaying = true; soundBtn.classList.add('on'); soundBtn.textContent = '🔊';
+            }
 
-  <!-- Slide 4: Step 03 -->
-  <div class="slide" data-dur="8">
-    <div class="slide-bg" style="background-image:url(step_labor.png)"></div>
-    <div class="slide-overlay"></div>
-    <span class="s-step">03</span>
-    <div class="slide-content">
-      <div class="s-label">STEP 03 — LABOR & INSURANCE</div>
-      <h1 class="s-title">労務環境を<br><em>整備する。</em></h1>
-      <div class="s-divider"></div>
-      <p class="s-narration">社会保険・労働保険の手続き、<br>就業規則の策定、助成金申請まで<br>社労士チームが一元管理。</p>
-    </div>
-  </div>
+            function stopBGM() {
+                if (!audioCtx) return;
+                bgmNodes.forEach(n => { try { n.stop() } catch (e) { } }); bgmNodes = [];
+                clearTimeout(bgmTimer); clearTimeout(bgmHatTimer);
+                audioCtx.close(); audioCtx = null; bgmPlaying = false;
+                soundBtn.classList.remove('on'); soundBtn.textContent = '🔇';
+            }
 
-  <!-- Slide 5: Step 04 -->
-  <div class="slide" data-dur="8">
-    <div class="slide-bg" style="background-image:url(step_growth.png)"></div>
-    <div class="slide-overlay"></div>
-    <span class="s-step">04</span>
-    <div class="slide-content">
-      <div class="s-label">STEP 04 — RETENTION & GROWTH</div>
-      <h1 class="s-title">定着と成長を<br><em>支える。</em></h1>
-      <div class="s-divider"></div>
-      <p class="s-narration">定期訪問・日本語教育・<br>キャリアアップ研修で<br>長期的な成功をサポートします。</p>
-    </div>
-  </div>
+            soundBtn.addEventListener('click', e => { e.stopPropagation(); bgmPlaying ? stopBGM() : startBGM() });
 
-  <!-- Slide 6: CTA -->
-  <div class="slide cta-slide" data-dur="12">
-    <div class="slide-bg" style="background-image:url(nexio_hero.png)"></div>
-    <div class="slide-overlay" style="background:rgba(10,30,61,0.88)"></div>
-    <div class="slide-content">
-      <div class="s-label" style="animation-delay:0.2s">NEXIO GROUP</div>
-      <h1 class="s-title" style="animation-delay:0.4s;text-align:center">採用から定着まで、<br><em>まるごと</em>ご相談ください。</h1>
-      <div class="s-divider" style="animation-delay:0.7s;margin:0 auto"></div>
-      <a href="https://ikkotakagi-sketch.github.io/nexio-lp/#contact" target="_blank" class="cta-btn">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
-        お問い合わせはこちら
-      </a>
-      <div class="cta-sub">無料相談受付中</div>
-    </div>
-  </div>
+            // === VOICEVOX Narration (雀松朱司) ===
+            const narAudios = [];
+            for (let i = 0; i < slides.length; i++) {
+                const audio = new Audio('nar_' + i + '.wav');
+                audio.preload = 'auto';
+                audio.volume = 1.0;
+                narAudios.push(audio);
+            }
+            let currentNarAudio = null;
 
-  <!-- Sound button -->
-  <button class="sound-btn" id="soundBtn" title="BGM">♪</button>
-</div>
+            function playNarration(idx) {
+                if (currentNarAudio) {
+                    currentNarAudio.pause();
+                    currentNarAudio.currentTime = 0;
+                }
+                if (idx >= 0 && idx < narAudios.length) {
+                    currentNarAudio = narAudios[idx];
+                    currentNarAudio.play().catch(e => { });
+                }
+            }
 
-<script>
-document.addEventListener('DOMContentLoaded', () => {
-  const slides = document.querySelectorAll('.slide');
-  const progressBar = document.getElementById('progress');
-  const playOverlay = document.getElementById('playOverlay');
-  const soundBtn = document.getElementById('soundBtn');
-  let current = 0;
-  let timer = null;
-  let audioCtx = null;
-  let bgmPlaying = false;
+            function showSlide(idx) {
+                slides.forEach((s, i) => {
+                    if (i === idx) s.classList.add('active');
+                    else {
+                        s.classList.remove('active'); if (i === (idx - 1 + slides.length) % slides.length) s.classList.add('prev');
+                        else s.classList.remove('prev')
+                    }
+                });
+                // Update counter
+                counter.innerHTML = '<span class="current">' + (idx + 1) + '</span> / ' + slides.length;
+                // Progress
+                segs.forEach((seg, i) => {
+                    seg.classList.remove('active', 'done');
+                    seg.querySelector('.progress-fill').style.transitionDuration = '';
+                    if (i < idx) seg.classList.add('done');
+                });
+                const dur = parseInt(slides[idx].getAttribute('data-dur')) || 8;
+                requestAnimationFrame(() => {
+                    segs[idx].classList.add('active');
+                    segs[idx].querySelector('.progress-fill').style.transitionDuration = dur + 's';
+                });
+                // VOICEVOX Narration — play after 0.4s delay
+                setTimeout(() => playNarration(idx), 400);
+                clearTimeout(timer);
+                if (idx < slides.length - 1) {
+                    timer = setTimeout(() => { current = idx + 1; showSlide(current) }, dur * 1000);
+                }
+            }
 
-  // Build progress segments
-  slides.forEach(() => {
-    const seg = document.createElement('div');
-    seg.className = 'progress-seg';
-    seg.innerHTML = '<div class="progress-fill"></div>';
-    progressBar.appendChild(seg);
-  });
-  const segs = progressBar.querySelectorAll('.progress-seg');
+            playOverlay.addEventListener('click', () => {
+                playOverlay.classList.add('hidden'); startBGM(); showSlide(0);
+            });
 
-  // BGM via Web Audio API — chill ambient pad
-  function startBGM() {
-    if (audioCtx) return;
-    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-    const master = audioCtx.createGain();
-    master.gain.value = 0.08;
-    master.connect(audioCtx.destination);
-
-    function pad(freq, detune) {
-      const osc = audioCtx.createOscillator();
-      const gain = audioCtx.createGain();
-      osc.type = 'sine';
-      osc.frequency.value = freq;
-      osc.detune.value = detune || 0;
-      gain.gain.value = 0.3;
-      osc.connect(gain);
-      gain.connect(master);
-      osc.start();
-      // Slow LFO for movement
-      const lfo = audioCtx.createOscillator();
-      const lfoGain = audioCtx.createGain();
-      lfo.frequency.value = 0.15 + Math.random() * 0.1;
-      lfoGain.gain.value = 3;
-      lfo.connect(lfoGain);
-      lfoGain.connect(osc.frequency);
-      lfo.start();
-      return { osc, gain };
-    }
-
-    // Ambient pad chord: Cmaj7 feel
-    pad(130.81, 5);  // C3
-    pad(164.81, -3); // E3
-    pad(196.00, 7);  // G3
-    pad(246.94, -5); // B3
-    pad(261.63, 3);  // C4 (octave)
-    bgmPlaying = true;
-    soundBtn.textContent = '♪';
-    soundBtn.style.borderColor = 'var(--green)';
-  }
-
-  function stopBGM() {
-    if (audioCtx) {
-      audioCtx.close();
-      audioCtx = null;
-      bgmPlaying = false;
-      soundBtn.textContent = '♪';
-      soundBtn.style.borderColor = 'rgba(255,255,255,0.2)';
-    }
-  }
-
-  soundBtn.addEventListener('click', (e) => {
-    e.stopPropagation();
-    bgmPlaying ? stopBGM() : startBGM();
-  });
-
-  function showSlide(idx) {
-    // Reset all
-    slides.forEach((s, i) => {
-      s.classList.remove('active');
-      // Reset animations
-      s.querySelectorAll('.s-label,.s-title,.s-narration,.s-step,.s-divider,.cta-btn,.cta-sub').forEach(el => {
-        el.style.animation = 'none';
-        el.offsetHeight; // reflow
-        el.style.animation = '';
-      });
-    });
-
-    // Update progress
-    segs.forEach((seg, i) => {
-      seg.classList.remove('active', 'done');
-      seg.querySelector('.progress-fill').style.transitionDuration = '';
-      if (i < idx) {
-        seg.classList.add('done');
-      }
-    });
-
-    // Activate current
-    slides[idx].classList.add('active');
-    // Reset Ken Burns
-    const bg = slides[idx].querySelector('.slide-bg');
-    if (bg) {
-      bg.style.animation = 'none';
-      bg.offsetHeight;
-      bg.style.animation = '';
-    }
-
-    // Animate progress
-    const dur = parseInt(slides[idx].getAttribute('data-dur')) || 8;
-    requestAnimationFrame(() => {
-      segs[idx].classList.add('active');
-      segs[idx].querySelector('.progress-fill').style.transitionDuration = dur + 's';
-    });
-
-    // Auto advance
-    clearTimeout(timer);
-    if (idx < slides.length - 1) {
-      timer = setTimeout(() => {
-        current = idx + 1;
-        showSlide(current);
-      }, dur * 1000);
-    }
-  }
-
-  // Start on tap
-  playOverlay.addEventListener('click', () => {
-    playOverlay.classList.add('hidden');
-    startBGM();
-    showSlide(0);
-  });
-
-  // Tap to advance
-  document.getElementById('reel').addEventListener('click', (e) => {
-    if (!playOverlay.classList.contains('hidden')) return;
-    if (e.target.closest('.cta-btn') || e.target.closest('.sound-btn')) return;
-    clearTimeout(timer);
-    current = (current + 1) % slides.length;
-    showSlide(current);
-  });
-});
-</script>
+            document.getElementById('reel').addEventListener('click', e => {
+                if (!playOverlay.classList.contains('hidden')) return;
+                if (e.target.closest('.cta-btn') || e.target.closest('.sound-btn')) return;
+                clearTimeout(timer); current = (current + 1) % slides.length; showSlide(current);
+            });
+        });
+    </script>
 </body>
+
 </html>
