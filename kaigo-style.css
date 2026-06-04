@@ -484,6 +484,12 @@
 
 /* Responsive adjustment */
 @media (max-width: 1024px) {
+    /* SERVICESセクションをスマホ等で縦1列並び（1fr）にするスタイルを確実に追加 */
+    .services-grid {
+        grid-template-columns: 1fr !important;
+        gap: 24px;
+    }
+
     .step-row {
         grid-template-columns: 1fr;
         min-height: auto;
