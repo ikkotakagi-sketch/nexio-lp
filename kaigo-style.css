@@ -136,19 +136,17 @@
 .stat-number-wrap {
     display: inline-flex;
     align-items: baseline;
-    position: relative;
+    gap: 4px;
     width: fit-content;
 }
 
-/* ＋や％の単位表示を数字の右上に絶対配置する調整 */
+/* ＋や％の単位表示を通常の横並びにする調整 */
 .stat-unit {
     font-size: 1.2rem !important; /* サイズをやや縮小 */
     color: var(--green) !important;
     font-weight: 800 !important;
-    position: absolute !important;
-    top: 0px; /* 数字の右上付近に配置 */
-    left: 100%; /* 数字のすぐ右側に張り付ける */
-    margin-left: 2px !important;
+    position: static !important; /* 絶対配置を無効化 */
+    margin-left: 4px !important;
     line-height: 1 !important;
 }
 
@@ -544,5 +542,16 @@
     
     .subsidy-action .btn {
         width: 100%;
+    }
+}
+
+/* Wide Service Card Responsive Layout */
+.service-card-wide {
+    grid-column: span 2;
+}
+
+@media (max-width: 1024px) {
+    .service-card-wide {
+        grid-column: span 1 !important;
     }
 }
