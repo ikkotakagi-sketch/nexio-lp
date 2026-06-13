@@ -331,11 +331,12 @@ header.scrolled {
 }
 
 .hero-tag {
-    font-size: 0.75rem;
-    letter-spacing: 6px;
-    font-weight: 600;
+    font-size: clamp(0.95rem, 1.8vw, 1.25rem);
+    letter-spacing: 4px;
+    font-weight: 700;
     color: var(--green);
     margin-bottom: 28px;
+    display: inline-block;
 }
 
 .hero-title {
